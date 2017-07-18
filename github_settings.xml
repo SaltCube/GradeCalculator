@@ -3,5 +3,6 @@
     <option name="LOGIN" value="SaltCube" />
     <option name="AUTH_TYPE" value="BASIC" />
     <option name="ANONYMOUS_GIST" value="true" />
+    <option name="VALID_GIT_AUTH" value="false" />
   </component>
 </application>
