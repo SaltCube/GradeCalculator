@@ -11,13 +11,8 @@
 *.war
 *.ear
 
-<<<<<<< HEAD
-# Intellij .idea Folder #
-.idea/
-=======
-# Intellij directories #
+# Intellij Files #
 /.idea
->>>>>>> ebbb49b17f9aa6d548ea762e87a5305be3e21062
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
