@@ -132,6 +132,16 @@ public class TextEditorController
 		}
 	}
 	
+	@FXML public void onMenuPrint()
+	{
+		print(new File("C:/File.txt") /* <-this is a placeholder, get the current file instead*/);
+	}
+	
+	void print(File file)
+	{
+		/* print the file passed */
+	}
+	
 	@FXML public void onMenuSettings()
 	{
 		settings();
@@ -165,7 +175,7 @@ public class TextEditorController
 		try
 		{
 			Stage report = new Stage();
-			report.setTitle("About");
+			report.setTitle("Report");
 			report.getIcons().add(new Image("core/icon.png"));
 			report.setScene(new Scene(FXMLLoader.load(getClass().getResource("Report_GUI.fxml"))));
 			report.show();
@@ -187,7 +197,7 @@ public class TextEditorController
 		try
 		{
 			Stage grade = new Stage();
-			grade.setTitle("About");
+			grade.setTitle("Grade");
 			grade.getIcons().add(new Image("core/icon.png"));
 			grade.setScene(new Scene(FXMLLoader.load(getClass().getResource("Grade_GUI.fxml"))));
 			grade.setAlwaysOnTop(true);
