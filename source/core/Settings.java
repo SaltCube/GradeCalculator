@@ -14,7 +14,7 @@ public class Settings implements Initializable
 	private final String path = "GCAL_settings.cfg";
 	@FXML CheckBox autoSaveBox;
 	@FXML TextField autoSaveTime;
-
+	
 	// --Commented out by Inspection START (7/18/2017 12:49):
 	//	@FXML private void autoSave()
 	//	{
@@ -26,7 +26,7 @@ public class Settings implements Initializable
 	//		}
 	//	}
 	// --Commented out by Inspection STOP (7/18/2017 12:49)
-
+	
 	@FXML public void settingsChange() throws IOException
 	{
 		try (BufferedWriter configOut = new BufferedWriter(new FileWriter(path)))
@@ -42,7 +42,7 @@ public class Settings implements Initializable
 			System.out.println("settings file not found");
 		}
 	}
-
+	
 	public void openSettings()
 	{
 		try (BufferedReader in = new BufferedReader(new FileReader(path)))
@@ -54,7 +54,7 @@ public class Settings implements Initializable
 			e.printStackTrace();
 		}
 	}
-
+	
 	@Override public void initialize(URL location, ResourceBundle resources)
 	{
 		//autoSaveBox.setSelected(true);

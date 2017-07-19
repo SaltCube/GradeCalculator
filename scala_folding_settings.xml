@@ -1,7 +1,0 @@
-<application>
-  <component name="ScalaCodeFoldingSettings">
-    <option name="collapseBlockComments" value="true" />
-    <option name="collapseMultilineStrings" value="true" />
-    <option name="collapsePackagings" value="true" />
-  </component>
-</application>
