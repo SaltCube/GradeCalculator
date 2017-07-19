@@ -12,7 +12,7 @@
 *.ear
 
 # Intellij Files #
-/.idea
+.idea/
 *.iml
 out/artifacts/
 source/META-INF/
