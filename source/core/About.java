@@ -16,7 +16,7 @@ public class About implements Initializable
 	@FXML private TextArea aboutText;
 	@FXML private Button GitHubButton;
 	@FXML private Button closeButton;
-
+	
 	@FXML public void GitHubPressed()
 	{
 		try
@@ -28,11 +28,12 @@ public class About implements Initializable
 			e.printStackTrace();
 		}
 	}
+	
 	@FXML public void closePressed()
 	{
 		((Stage) closeButton.getScene().getWindow()).close();
 	}
-
+	
 	@Override public void initialize(URL location, ResourceBundle resources)
 	{
 		aboutText.setWrapText(true);

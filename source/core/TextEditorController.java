@@ -16,32 +16,33 @@ import java.io.*;
 public class TextEditorController
 {
 	private static TextEditorController instance = null;
-	@FXML private TextArea userText;
-	@FXML private MenuItem menuNew;
-	@FXML private MenuItem menuSave;
-	@FXML private MenuItem menuSaveAs;
-	@FXML private MenuItem menuOpen;
-	@FXML private MenuItem menuSettings;
-	@FXML private MenuItem menuAbout;
-	@FXML private MenuItem menuReport;
+	@FXML MenuItem menuGrade;
+	@FXML TextArea userText;
+	@FXML MenuItem menuNew;
+	@FXML MenuItem menuSave;
+	@FXML MenuItem menuSaveAs;
+	@FXML MenuItem menuOpen;
+	@FXML MenuItem menuSettings;
+	@FXML MenuItem menuAbout;
+	@FXML MenuItem menuReport;
 	private String path = null;
-
+	
 	static public void instantiate()
 	{
 		instance = TextEditorController.get();
 	}
-
+	
 	static TextEditorController get()
 	{
 		if (instance == null) instance = new TextEditorController();
 		return instance;
 	}
-
+	
 	@FXML public void onMenuNew()
 	{
 		newFile();
 	}
-
+	
 	private void newFile()
 	{
 		try
@@ -54,17 +55,17 @@ public class TextEditorController
 			System.out.println("Error opening new window");
 		}
 	}
-
+	
 	@FXML public void onMenuSave()
 	{
 		save(new File(path));
 	}
-
+	
 	@FXML public void onMenuSaveAs()
 	{
 		save(new FileChooser().showSaveDialog(null));
 	}
-
+	
 	void save(File file)
 	{
 		if (file == null) file = new File(path);
@@ -90,12 +91,12 @@ public class TextEditorController
 			System.out.println("Null pointer error");
 		}
 	}
-
+	
 	@FXML public void onMenuOpen()
 	{
 		open(new FileChooser().showOpenDialog(null));
 	}
-
+	
 	private void open(File file)
 	{
 		path = file.getPath();
@@ -130,12 +131,12 @@ public class TextEditorController
 			System.out.println("Null pointer error");
 		}
 	}
-
+	
 	@FXML public void onMenuSettings()
 	{
 		settings();
 	}
-
+	
 	private void settings()
 	{
 		try
@@ -153,12 +154,12 @@ public class TextEditorController
 			System.out.println("something went wrong opening settings");
 		}
 	}
-
+	
 	@FXML public void onMenuReport()
 	{
 		report();
 	}
-
+	
 	private void report()
 	{
 		try
@@ -175,12 +176,12 @@ public class TextEditorController
 			System.out.println("Something went wrong opening report");
 		}
 	}
-
+	
 	@FXML public void onMenuGrade()
 	{
 		grade();
 	}
-
+	
 	private void grade()
 	{
 		try
@@ -198,12 +199,12 @@ public class TextEditorController
 			System.out.println("Something went wrong opening grade");
 		}
 	}
-
+	
 	@FXML public void onMenuAbout()
 	{
 		about();
 	}
-
+	
 	private void about()
 	{
 		try
