@@ -1,4 +1,3 @@
-.text-area:disabled, .text-area:disabled > *
-{
-	-fx-opacity: 1.0;
+.text-area:disabled, .text-area:disabled > * {
+    -fx-opacity: 1.0;
 }
