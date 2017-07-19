@@ -1,13 +1,7 @@
 <application>
   <component name="ScalaCodeFoldingSettings">
     <option name="collapseBlockComments" value="true" />
-    <option name="collapseCustomRegions" value="true" />
-    <option name="collapseMethodCallBodies" value="true" />
-    <option name="collapseMultilineBlocks" value="true" />
     <option name="collapseMultilineStrings" value="true" />
     <option name="collapsePackagings" value="true" />
-    <option name="collapseTemplateBodies" value="true" />
-    <option name="collapseTypeLambdas" value="true" />
-    <option name="foldingForAllBlocks" value="true" />
   </component>
 </application>
