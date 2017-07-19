@@ -1,1 +1,1 @@
-# [GradeCalculator](https://github.com/SaltCube/GradeCalculator)
+# [GradeCalculator](https://saltcube.github.io/GradeCalculator/)
