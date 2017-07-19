@@ -12,8 +12,10 @@ import java.util.ResourceBundle;
 public class Settings implements Initializable
 {
 	private final String path = "GCAL_settings.cfg";
-	@FXML CheckBox autoSaveBox;
-	@FXML TextField autoSaveTime;
+	@FXML
+	CheckBox autoSaveBox;
+	@FXML
+	TextField autoSaveTime;
 	
 	// --Commented out by Inspection START (7/18/2017 12:49):
 	//	@FXML private void autoSave()
@@ -27,7 +29,8 @@ public class Settings implements Initializable
 	//	}
 	// --Commented out by Inspection STOP (7/18/2017 12:49)
 	
-	@FXML public void settingsChange() throws IOException
+	@FXML
+	public void settingsChange() throws IOException
 	{
 		try (BufferedWriter configOut = new BufferedWriter(new FileWriter(path)))
 		{
@@ -55,7 +58,8 @@ public class Settings implements Initializable
 		}
 	}
 	
-	@Override public void initialize(URL location, ResourceBundle resources)
+	@Override
+	public void initialize(URL location, ResourceBundle resources)
 	{
 		//autoSaveBox.setSelected(true);
 	}

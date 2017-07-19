@@ -13,11 +13,15 @@ import java.util.ResourceBundle;
 
 public class About implements Initializable
 {
-	@FXML private TextArea aboutText;
-	@FXML private Button GitHubButton;
-	@FXML private Button closeButton;
+	@FXML
+	private TextArea aboutText;
+	@FXML
+	private Button GitHubButton;
+	@FXML
+	private Button closeButton;
 	
-	@FXML public void GitHubPressed()
+	@FXML
+	public void GitHubPressed()
 	{
 		try
 		{
@@ -29,12 +33,14 @@ public class About implements Initializable
 		}
 	}
 	
-	@FXML public void closePressed()
+	@FXML
+	public void closePressed()
 	{
 		((Stage) closeButton.getScene().getWindow()).close();
 	}
 	
-	@Override public void initialize(URL location, ResourceBundle resources)
+	@Override
+	public void initialize(URL location, ResourceBundle resources)
 	{
 		aboutText.setWrapText(true);
 		aboutText.setEditable(false);

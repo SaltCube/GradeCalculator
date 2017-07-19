@@ -8,7 +8,8 @@ import javafx.stage.Stage;
 
 public class TextEditor extends Application
 {
-	@Override public void start(Stage mainStage) throws Exception
+	@Override
+	public void start(Stage mainStage) throws Exception
 	{
 		mainStage.setTitle("TextFX");
 		mainStage.getIcons().add(new Image("core/icon.png"));

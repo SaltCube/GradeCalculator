@@ -19,9 +19,7 @@
 				<MenuItem fx:id="menuGrade" mnemonicParsing="false" onAction="#onMenuGrade" text="Grade"/>
 			</Menu>
 			<Menu mnemonicParsing="false" text="Help">
-				<items>
-					<MenuItem fx:id="menuAbout" mnemonicParsing="false" onAction="#onMenuAbout" text="About"/>
-				</items>
+				<MenuItem fx:id="menuAbout" mnemonicParsing="false" onAction="#onMenuAbout" text="About"/>
 			</Menu>
 		</MenuBar>
 	</top>

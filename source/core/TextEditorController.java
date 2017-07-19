@@ -16,15 +16,24 @@ import java.io.*;
 public class TextEditorController
 {
 	private static TextEditorController instance = null;
-	@FXML MenuItem menuGrade;
-	@FXML TextArea userText;
-	@FXML MenuItem menuNew;
-	@FXML MenuItem menuSave;
-	@FXML MenuItem menuSaveAs;
-	@FXML MenuItem menuOpen;
-	@FXML MenuItem menuSettings;
-	@FXML MenuItem menuAbout;
-	@FXML MenuItem menuReport;
+	@FXML
+	MenuItem menuGrade;
+	@FXML
+	TextArea userText;
+	@FXML
+	MenuItem menuNew;
+	@FXML
+	MenuItem menuSave;
+	@FXML
+	MenuItem menuSaveAs;
+	@FXML
+	MenuItem menuOpen;
+	@FXML
+	MenuItem menuSettings;
+	@FXML
+	MenuItem menuAbout;
+	@FXML
+	MenuItem menuReport;
 	private String path = null;
 	
 	static public void instantiate()
@@ -38,7 +47,8 @@ public class TextEditorController
 		return instance;
 	}
 	
-	@FXML public void onMenuNew()
+	@FXML
+	public void onMenuNew()
 	{
 		newFile();
 	}
@@ -56,12 +66,14 @@ public class TextEditorController
 		}
 	}
 	
-	@FXML public void onMenuSave()
+	@FXML
+	public void onMenuSave()
 	{
 		save(new File(path));
 	}
 	
-	@FXML public void onMenuSaveAs()
+	@FXML
+	public void onMenuSaveAs()
 	{
 		save(new FileChooser().showSaveDialog(null));
 	}
@@ -92,7 +104,8 @@ public class TextEditorController
 		}
 	}
 	
-	@FXML public void onMenuOpen()
+	@FXML
+	public void onMenuOpen()
 	{
 		open(new FileChooser().showOpenDialog(null));
 	}
@@ -132,7 +145,8 @@ public class TextEditorController
 		}
 	}
 	
-	@FXML public void onMenuSettings()
+	@FXML
+	public void onMenuSettings()
 	{
 		settings();
 	}
@@ -155,7 +169,8 @@ public class TextEditorController
 		}
 	}
 	
-	@FXML public void onMenuReport()
+	@FXML
+	public void onMenuReport()
 	{
 		report();
 	}
@@ -177,7 +192,8 @@ public class TextEditorController
 		}
 	}
 	
-	@FXML public void onMenuGrade()
+	@FXML
+	public void onMenuGrade()
 	{
 		grade();
 	}
@@ -200,7 +216,8 @@ public class TextEditorController
 		}
 	}
 	
-	@FXML public void onMenuAbout()
+	@FXML
+	public void onMenuAbout()
 	{
 		about();
 	}

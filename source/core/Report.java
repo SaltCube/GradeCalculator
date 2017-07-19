@@ -7,7 +7,8 @@ import java.util.ResourceBundle;
 
 public class Report implements Initializable
 {
-	@Override public void initialize(URL location, ResourceBundle resources)
+	@Override
+	public void initialize(URL location, ResourceBundle resources)
 	{
 	}
 }
