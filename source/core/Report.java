@@ -16,13 +16,13 @@ public class Report implements Initializable
 	
 	@FXML void onReportSaveAs()
 	{
-		TextEditorController.get().save(new FileChooser().showSaveDialog(null));
-	}
+		TextEditorController.get().save(new FileChooser().showSaveDialog(null)); //opens save as for the report window
+	} //NEEDS FIX; FXML call for report save
 	
 	@FXML void onReportPrint()
 	{
 		TextEditorController.get().print(new File("C:/File.txt")/* <-this is a placeholder, print report file instead*/);
-	}
+	} //NEEDS FIX; FXML call for report print
 	@Override public void initialize(URL location, ResourceBundle resources)
 	{
 	}

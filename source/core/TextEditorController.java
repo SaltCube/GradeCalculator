@@ -27,12 +27,7 @@ public class TextEditorController
 	@FXML MenuItem menuReport;
 	private String path = null;
 	
-	static public void instantiate()
-	{
-		instance = TextEditorController.get();
-	}
-	
-	static TextEditorController get()
+	static TextEditorController get() //singleton-ish mostly so the save function can be called from other classes
 	{
 		if (instance == null) instance = new TextEditorController();
 		return instance;
@@ -41,13 +36,13 @@ public class TextEditorController
 	@FXML public void onMenuNew()
 	{
 		newFile();
-	}
+	} //FXML call to new file method
 	
-	private void newFile()
+	private void newFile() //new file method logic
 	{
 		try
 		{
-			new TextEditor().start(new Stage());
+			new TextEditor().start(new Stage()); //simply opens new duplicate window, blank
 		}
 		catch (Exception e)
 		{
@@ -59,19 +54,19 @@ public class TextEditorController
 	@FXML public void onMenuSave()
 	{
 		save(new File(path));
-	}
+	} //FXML call to save method
 	
 	@FXML public void onMenuSaveAs()
 	{
 		save(new FileChooser().showSaveDialog(null));
-	}
+	} //FXML call to save as method
 	
-	void save(File file)
+	void save(File file) //save file method logic
 	{
 		if (file == null) file = new File(path);
 		else
 		{
-			String path = file.getPath();
+			String path = file.getPath(); //sets the file path to the opened file
 		}
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(file)))
 		{
@@ -95,20 +90,20 @@ public class TextEditorController
 	@FXML public void onMenuOpen()
 	{
 		open(new FileChooser().showOpenDialog(null));
-	}
+	} //FXML call to open file
 	
-	private void open(File file)
+	private void open(File file) //open file method logic
 	{
-		path = file.getPath();
+		path = file.getPath(); //sets the file path to the opened file
 		try (BufferedReader reader = new BufferedReader(new FileReader(file)))
 		{
-			String line;
-			userText.setText(null);
+			String line; //string for storing current line read
+			userText.setText(null); //wipes the current text in the textarea
 			while ((line = reader.readLine()) != null)
 			{
 				//System.out.println(line);
-				userText.appendText(line);
-				userText.appendText(System.getProperty("line.separator"));
+				userText.appendText(line); //adds line read
+				userText.appendText(System.getProperty("line.separator")); //adds a new line
 			}
 		}
 		catch (FileNotFoundException e)
@@ -132,12 +127,12 @@ public class TextEditorController
 		}
 	}
 	
-	@FXML public void onMenuPrint()
+	@FXML public void onMenuPrint() //NEEDS FIX; FXML call print method
 	{
 		print(new File("C:/File.txt") /* <-this is a placeholder, get the current file instead*/);
 	}
 	
-	void print(File file)
+	void print(File file) //print method logic
 	{
 		/* print the file passed */
 	}
@@ -145,18 +140,18 @@ public class TextEditorController
 	@FXML public void onMenuSettings()
 	{
 		settings();
-	}
+	} //FXML call open settings window
 	
-	private void settings()
+	private void settings() //open settings window logic
 	{
 		try
 		{
-			Stage settings = new Stage();
-			settings.setTitle("Settings");
-			settings.getIcons().add(new Image("core/icon.png"));
-			settings.setScene(new Scene(FXMLLoader.load(getClass().getResource("Settings_GUI.fxml"))));
-			settings.setAlwaysOnTop(true);
-			settings.show();
+			Stage settings = new Stage(); //opens a new stage for the settings window
+			settings.setTitle("Settings"); //sets title
+			settings.getIcons().add(new Image("core/icon.png")); //sets icon
+			settings.setScene(new Scene(FXMLLoader.load(getClass().getResource("Settings_GUI.fxml")))); //sets GUI file
+			settings.setAlwaysOnTop(true); //sets settings window to always show on top of desktop (until closed)
+			settings.show(); //shows the settings window
 		}
 		catch (IOException e)
 		{
@@ -168,17 +163,17 @@ public class TextEditorController
 	@FXML public void onMenuReport()
 	{
 		report();
-	}
+	} //FXML call open report window
 	
-	private void report()
+	private void report() //open report window logic
 	{
 		try
 		{
-			Stage report = new Stage();
-			report.setTitle("Report");
-			report.getIcons().add(new Image("core/icon.png"));
-			report.setScene(new Scene(FXMLLoader.load(getClass().getResource("Report_GUI.fxml"))));
-			report.show();
+			Stage report = new Stage(); //opens a new stage for the report window
+			report.setTitle("Report"); //sets title
+			report.getIcons().add(new Image("core/icon.png")); //sets icon
+			report.setScene(new Scene(FXMLLoader.load(getClass().getResource("Report_GUI.fxml")))); //sets GUI file
+			report.show(); //shows window
 		}
 		catch (IOException e)
 		{
@@ -190,18 +185,18 @@ public class TextEditorController
 	@FXML public void onMenuGrade()
 	{
 		grade();
-	}
+	} //FXML call open grade window
 	
-	private void grade()
+	private void grade() //open grade window logic
 	{
 		try
 		{
-			Stage grade = new Stage();
-			grade.setTitle("Grade");
-			grade.getIcons().add(new Image("core/icon.png"));
-			grade.setScene(new Scene(FXMLLoader.load(getClass().getResource("Grade_GUI.fxml"))));
-			grade.setAlwaysOnTop(true);
-			grade.show();
+			Stage grade = new Stage(); //new stage for grade window
+			grade.setTitle("Grade"); //sets title
+			grade.getIcons().add(new Image("core/icon.png")); //sets icon
+			grade.setScene(new Scene(FXMLLoader.load(getClass().getResource("Grade_GUI.fxml")))); //sets GUI file
+			grade.setAlwaysOnTop(true); //sets to always show on top of desktop (until closed)
+			grade.show(); //shows window
 		}
 		catch (IOException e)
 		{
@@ -213,18 +208,18 @@ public class TextEditorController
 	@FXML public void onMenuAbout()
 	{
 		about();
-	}
+	} //FXML call open about window
 	
-	private void about()
+	private void about() //open about window logic
 	{
 		try
 		{
-			Stage about = new Stage();
-			about.setTitle("About");
-			about.getIcons().add(new Image("core/icon.png"));
-			about.setScene(new Scene(FXMLLoader.load(getClass().getResource("About_GUI.fxml"))));
-			about.setAlwaysOnTop(true);
-			about.show();
+			Stage about = new Stage(); //new stage for about window
+			about.setTitle("About"); //sets title
+			about.getIcons().add(new Image("core/icon.png")); //sets icon
+			about.setScene(new Scene(FXMLLoader.load(getClass().getResource("About_GUI.fxml")))); //sets GUI file
+			about.setAlwaysOnTop(true); //sets to always show on top of desktop (until closed)
+			about.show(); //shows window
 		}
 		catch (Exception e)
 		{

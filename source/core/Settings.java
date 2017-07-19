@@ -11,7 +11,7 @@ import java.util.ResourceBundle;
 
 public class Settings implements Initializable
 {
-	private final String path = "GCAL_settings.cfg";
+	private final String path = "GCAL_settings.cfg"; //path to store the settings configurations
 	@FXML CheckBox autoSaveBox;
 	@FXML TextField autoSaveTime;
 	
@@ -27,14 +27,13 @@ public class Settings implements Initializable
 	//	}
 	// --Commented out by Inspection STOP (7/18/2017 12:49)
 	
-	@FXML public void settingsChange() throws IOException
+	@FXML public void settingsChange() throws IOException //NEEDS FIX; if something changes in the settings window, update the file
 	{
 		try (BufferedWriter configOut = new BufferedWriter(new FileWriter(path)))
 		{
-			configOut.write("autosave: ");
+			configOut.write("autosave: "); //just filler for now, updates the autosave file
 			configOut.write(autoSaveBox.isSelected() + ", " + autoSaveTime.getText());
 			configOut.write(System.getProperty("line.separator"));
-			configOut.close();
 		}
 		catch (FileNotFoundException e)
 		{
@@ -45,9 +44,9 @@ public class Settings implements Initializable
 	
 	public void openSettings()
 	{
-		try (BufferedReader in = new BufferedReader(new FileReader(path)))
+		try (BufferedReader in = new BufferedReader(new FileReader(path))) //reads the file before opening the settings window
 		{
-			autoSaveTime.setText(in.readLine());
+			autoSaveTime.setText(in.readLine()); //reads the file and sets the settings autoSave time (filler for now)
 		}
 		catch (IOException e)
 		{
@@ -57,6 +56,6 @@ public class Settings implements Initializable
 	
 	@Override public void initialize(URL location, ResourceBundle resources)
 	{
-		//autoSaveBox.setSelected(true);
+		//openSettings(); //on window open, call the openSettings() method
 	}
 }

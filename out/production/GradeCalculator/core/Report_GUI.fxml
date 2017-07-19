@@ -8,8 +8,8 @@
 	<bottom>
 		<ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
 			<buttons>
-				<Button text="Save As" ButtonBar.buttonData="LEFT"/>
-				<Button text="Print" ButtonBar.buttonData="RIGHT"/>
+				<Button fx:id="reportSaveAs" onAction="#onReportSaveAs" text="Save As" ButtonBar.buttonData="LEFT"/>
+				<Button fx:id="reportPrint" text="Print" ButtonBar.buttonData="RIGHT"/>
 			</buttons>
 			<BorderPane.margin>
 				<Insets left="4.0" right="4.0"/>
