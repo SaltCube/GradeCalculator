@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.BorderPane?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" minHeight="400.0" minWidth="300.0" prefHeight="800.0"
+            prefWidth="1400.0" xmlns="http://javafx.com/javafx/8.0.111"
+            fx:controller="core.TextEditorController">
+    <top>
+        <MenuBar BorderPane.alignment="CENTER">
+            <menus>
+                <Menu text="File">
+                    <items>
+                        <MenuItem fx:id="menuNew" mnemonicParsing="false" onAction="#onMenuNew" text="New"/>
+                        <MenuItem fx:id="menuSave" onAction="#onMenuSave" text="Save"/>
+                        <MenuItem fx:id="menuSaveAs" onAction="#onMenuSaveAs" text="Save As"/>
+                        <MenuItem fx:id="menuOpen" onAction="#onMenuOpen" text="Open"/>
+                        <MenuItem fx:id="menuSettings" onAction="#onMenuSettings" text="Settings"/>
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Calculate">
+                    <items>
+                        <MenuItem fx:id="menuReport" mnemonicParsing="false" onAction="#onMenuReport" text="Report"/>
+                        <MenuItem fx:id="menuGrade" mnemonicParsing="false" onAction="#onMenuGrade" text="Grade"/>
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                    <items>
+                        <MenuItem fx:id="menuAbout" mnemonicParsing="false" onAction="#onMenuAbout" text="About"/>
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </top>
+    <center>
+        <TextArea fx:id="userText" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER"/>
+    </center>
+</BorderPane>
