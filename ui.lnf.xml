@@ -1,0 +1,6 @@
+<application>
+  <component name="UISettings">
+    <option name="CONSOLE_COMMAND_HISTORY_LIMIT" value="900" />
+    <option name="SORT_LOOKUP_ELEMENTS_LEXICOGRAPHICALLY" value="true" />
+  </component>
+</application>
