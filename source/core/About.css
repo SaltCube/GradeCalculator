@@ -1,4 +1,4 @@
 .text-area:disabled, .text-area:disabled > * /* overwrites the default disabled text look */
 {
-	-fx-opacity: 8.0; /* sets the opacity to something readable */
+	-fx-opacity: 0.9; /* sets the opacity to something readable */
 }

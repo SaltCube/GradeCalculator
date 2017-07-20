@@ -218,6 +218,7 @@ public class TextEditorController
 			about.setTitle("About"); //sets title
 			about.getIcons().add(new Image("core/icon.png")); //sets icon
 			about.setScene(new Scene(FXMLLoader.load(getClass().getResource("About_GUI.fxml")))); //sets GUI file
+			about.setResizable(false); //sets the window to not be resizable
 			about.setAlwaysOnTop(true); //sets to always show on top of desktop (until closed)
 			about.show(); //shows window
 		}
