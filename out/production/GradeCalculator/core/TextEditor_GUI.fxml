@@ -1,29 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.BorderPane?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" minHeight="400.0" minWidth="300.0" prefHeight="800.0"
-            prefWidth="1400.0" xmlns="http://javafx.com/javafx/8.0.111"
-            fx:controller="core.TextEditorController">
-    <top>
-        <MenuBar BorderPane.alignment="CENTER">
-            <Menu text="File">
-                <MenuItem fx:id="menuNew" mnemonicParsing="false" onAction="#onMenuNew" text="New"/>
-                <MenuItem fx:id="menuSave" onAction="#onMenuSave" text="Save"/>
-                <MenuItem fx:id="menuSaveAs" onAction="#onMenuSaveAs" text="Save As"/>
-                <MenuItem fx:id="menuOpen" onAction="#onMenuOpen" text="Open"/>
-                <MenuItem fx:id="menuSettings" onAction="#onMenuSettings" text="Settings"/>
-            </Menu>
-            <Menu mnemonicParsing="false" text="Calculate">
-                <MenuItem fx:id="menuReport" mnemonicParsing="false" onAction="#onMenuReport" text="Report"/>
-                <MenuItem fx:id="menuGrade" mnemonicParsing="false" onAction="#onMenuGrade" text="Grade"/>
-            </Menu>
-            <Menu mnemonicParsing="false" text="Help">
-                <MenuItem fx:id="menuAbout" mnemonicParsing="false" onAction="#onMenuAbout" text="About"/>
-            </Menu>
-        </MenuBar>
-    </top>
-    <center>
-        <TextArea fx:id="userText" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER"/>
-    </center>
+
+<BorderPane minHeight="400.0" minWidth="300.0" prefHeight="800.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="core.TextEditorController">
+	<top>
+		<MenuBar>
+			<Menu text="File">
+				<MenuItem fx:id="menuNew" onAction="#onMenuNew" text="New" />
+				<MenuItem fx:id="menuSave" onAction="#onMenuSave" text="Save" />
+				<MenuItem fx:id="menuSaveAs" onAction="#onMenuSaveAs" text="Save As" />
+				<MenuItem fx:id="menuOpen" onAction="#onMenuOpen" text="Open" />
+            	<MenuItem fx:id="menuPrint" onAction="#onMenuPrint" text="Print" disable="true" />
+				<MenuItem fx:id="menuSettings" onAction="#onMenuSettings" text="Settings" disable="true" />
+			</Menu>
+			<Menu text="Calculate">
+				<MenuItem fx:id="menuClassReport" onAction="#onMenuClassReport" text="Class Report" />
+				<MenuItem fx:id="menuStudentReport" onAction="#onMenuStudentReport" text="Student Report" />
+			</Menu>
+			<Menu text="Help">
+				<MenuItem fx:id="menuAbout" onAction="#onMenuAbout" text="About" />
+			</Menu>
+		</MenuBar>
+	</top>
+	<center>
+		<TextArea fx:id="userText" prefHeight="200.0" prefWidth="200.0" />
+	</center>
 </BorderPane>
