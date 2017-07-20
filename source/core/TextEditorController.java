@@ -12,6 +12,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.util.ArrayList;
 
 public class TextEditorController
 {
@@ -229,5 +230,12 @@ public class TextEditorController
 			e.printStackTrace();
 			System.out.println("Something went wrong opening about");
 		}
+	}
+	
+	ArrayList<String> EditorArrayList()
+	{
+		ArrayList<String> list = new ArrayList<>();
+		for (CharSequence line : userText.getParagraphs()) list.add(line.toString());
+		return list;
 	}
 }

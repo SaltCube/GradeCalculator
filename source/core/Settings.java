@@ -9,23 +9,21 @@ import java.io.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class Settings implements Initializable
+public class Settings implements Initializable //Settings is disabled for now
 {
 	private final String path = "GCAL_settings.cfg"; //path to store the settings configurations
 	@FXML CheckBox autoSaveBox;
 	@FXML TextField autoSaveTime;
 	
-	// --Commented out by Inspection START (7/18/2017 12:49):
-	//	@FXML private void autoSave()
-	//	{
-	//		if (autoSaveBox.isSelected())
-	//		{
-	//			//int time = Integer.parseInt((new BufferedReader(new FileReader(path))).readLine());
-	//			Thread saveThread = new Thread(() -> TextEditorController.get().save(null));
-	//			saveThread.start();
-	//		}
-	//	}
-	// --Commented out by Inspection STOP (7/18/2017 12:49)
+	/*@FXML private void autoSave()
+	{
+		if (autoSaveBox.isSelected())
+		{
+			//int time = Integer.parseInt((new BufferedReader(new FileReader(path))).readLine());
+			Thread saveThread = new Thread(() -> TextEditorController.get().save(null));
+			saveThread.start();
+		}
+	}*/
 	
 	@FXML public void settingsChange() throws IOException //NEEDS FIX; if something changes in the settings window, update the file
 	{

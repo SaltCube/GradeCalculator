@@ -7,6 +7,7 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class StudentReport implements Initializable
@@ -24,5 +25,11 @@ public class StudentReport implements Initializable
 		TextEditorController.get().print(new File("C:/File.txt")/* <-this is a placeholder, print report file instead*/);
 	} //NEEDS FIX; (disabled) FXML call for report print
 	
+	ArrayList<String> getReport()
+	{
+		ArrayList<String> list = TextEditorController.get().EditorArrayList();
+		//for (String line : list) {}
+		return list;
+	}
 	@Override public void initialize(URL location, ResourceBundle resources) {}
 }
