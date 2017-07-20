@@ -16,7 +16,7 @@ import java.io.*;
 public class TextEditorController
 {
 	private static TextEditorController instance = null;
-	@FXML MenuItem menuGrade;
+	@FXML MenuItem menuStudentReport;
 	@FXML TextArea userText;
 	@FXML MenuItem menuNew;
 	@FXML MenuItem menuSave;
@@ -24,7 +24,9 @@ public class TextEditorController
 	@FXML MenuItem menuOpen;
 	@FXML MenuItem menuSettings;
 	@FXML MenuItem menuAbout;
-	@FXML MenuItem menuReport;
+	@FXML MenuItem menuClassReport;
+	@FXML MenuItem menuPrint;
+	
 	private String path = null;
 	
 	static TextEditorController get() //singleton-ish mostly so the save function can be called from other classes
@@ -127,7 +129,7 @@ public class TextEditorController
 		}
 	}
 	
-	@FXML public void onMenuPrint() //NEEDS FIX; FXML call print method
+	@FXML public void onMenuPrint() //NEEDS FIX; (disabled) FXML call print method
 	{
 		print(new File("C:/File.txt") /* <-this is a placeholder, get the current file instead*/);
 	}
@@ -140,7 +142,7 @@ public class TextEditorController
 	@FXML public void onMenuSettings()
 	{
 		settings();
-	} //FXML call open settings window
+	} //NEEDS FIX; (currently disabled) FXML call open settings window
 	
 	private void settings() //open settings window logic
 	{
@@ -160,7 +162,7 @@ public class TextEditorController
 		}
 	}
 	
-	@FXML public void onMenuReport()
+	@FXML public void onMenuClassReport()
 	{
 		report();
 	} //FXML call open report window
@@ -170,9 +172,9 @@ public class TextEditorController
 		try
 		{
 			Stage report = new Stage(); //opens a new stage for the report window
-			report.setTitle("Report"); //sets title
+			report.setTitle("ClassReport"); //sets title
 			report.getIcons().add(new Image("core/icon.png")); //sets icon
-			report.setScene(new Scene(FXMLLoader.load(getClass().getResource("Report_GUI.fxml")))); //sets GUI file
+			report.setScene(new Scene(FXMLLoader.load(getClass().getResource("ClassReport_GUI.fxml")))); //sets GUI file
 			report.show(); //shows window
 		}
 		catch (IOException e)
@@ -182,26 +184,26 @@ public class TextEditorController
 		}
 	}
 	
-	@FXML public void onMenuGrade()
+	@FXML public void onMenuStudentReport()
 	{
-		grade();
-	} //FXML call open grade window
+		studentReport();
+	} //FXML call open studentReport window
 	
-	private void grade() //open grade window logic
+	private void studentReport() //open studentReport window logic
 	{
 		try
 		{
-			Stage grade = new Stage(); //new stage for grade window
-			grade.setTitle("Grade"); //sets title
-			grade.getIcons().add(new Image("core/icon.png")); //sets icon
-			grade.setScene(new Scene(FXMLLoader.load(getClass().getResource("Grade_GUI.fxml")))); //sets GUI file
-			grade.setAlwaysOnTop(true); //sets to always show on top of desktop (until closed)
-			grade.show(); //shows window
+			Stage studentReport = new Stage(); //new stage for studentReport window
+			studentReport.setTitle("StudentReport"); //sets title
+			studentReport.getIcons().add(new Image("core/icon.png")); //sets icon
+			studentReport.setScene(new Scene(FXMLLoader.load(getClass().getResource("StudentReport_GUI.fxml")))); //sets GUI file
+			studentReport.setAlwaysOnTop(true); //sets to always show on top of desktop (until closed)
+			studentReport.show(); //shows window
 		}
 		catch (IOException e)
 		{
 			e.printStackTrace();
-			System.out.println("Something went wrong opening grade");
+			System.out.println("Something went wrong opening studentReport");
 		}
 	}
 	

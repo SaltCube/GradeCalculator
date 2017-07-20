@@ -9,7 +9,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class Report implements Initializable
+public class StudentReport implements Initializable
 {
 	@FXML Button reportSaveAs;
 	@FXML Button reportPrint;
@@ -22,8 +22,7 @@ public class Report implements Initializable
 	@FXML void onReportPrint()
 	{
 		TextEditorController.get().print(new File("C:/File.txt")/* <-this is a placeholder, print report file instead*/);
-	} //NEEDS FIX; FXML call for report print
-	@Override public void initialize(URL location, ResourceBundle resources)
-	{
-	}
+	} //NEEDS FIX; (disabled) FXML call for report print
+	
+	@Override public void initialize(URL location, ResourceBundle resources) {}
 }

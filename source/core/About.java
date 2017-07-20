@@ -24,6 +24,7 @@ public class About implements Initializable
 		try
 		{
 			java.awt.Desktop.getDesktop().browse(new java.net.URI("https://saltcube.github.io/GradeCalculator/")); //opens application GitHub page with default browser
+			closePressed();
 		}
 		catch (IOException | URISyntaxException e)
 		{
@@ -46,7 +47,7 @@ public class About implements Initializable
 		aboutText.setText("* labels: drops: weights: letters: cutoffs: must be specified before the scores\n" +
 						  "each on its own line with \",\" separating values including the last value.\n" +
 						  "These lines can be any order\n" +
-						  "* Grade portions must end with a *, including at the end.\n" +
+						  "* StudentReport portions must end with a *, including at the end.\n" +
 						  "* First line with points is assumed to supply the correct number of values for each portion. You can use a dummy record for this, if you prefer. \n" +
 						  "* Each grade value and the * are separated by a comma.\n" +
 						  "* Weights are typed as decimal. Ex: .3 for 30%.\n" +
