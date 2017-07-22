@@ -9,12 +9,15 @@
 		<ButtonBar prefHeight="40.0" prefWidth="200.0">
 			<buttons>
 				<Button fx:id="reportSaveAs" onAction="#onReportSaveAs" text="Save As" ButtonBar.buttonData="LEFT"/>
-				<Button fx:id="reportPrint" onAction="#onReportPrint" text="Print" ButtonBar.buttonData="RIGHT"
-						disable="true"/>
+				<Button fx:id="reportPrint" disable="true" onAction="#onReportPrint" text="Print"
+						ButtonBar.buttonData="RIGHT"/>
 			</buttons>
 			<BorderPane.margin>
 				<Insets left="4.0" right="4.0"/>
 			</BorderPane.margin>
 		</ButtonBar>
 	</bottom>
+	<center>
+		<TextArea fx:id="reportText" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER"/>
+	</center>
 </BorderPane>

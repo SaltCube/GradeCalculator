@@ -13,10 +13,11 @@ import javafx.stage.Stage;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
-public class TextEditorController
+public class MainController
 {
-	private static TextEditorController instance = null;
+	private static MainController instance = null;
 	@FXML MenuItem menuStudentReport;
 	@FXML TextArea userText;
 	@FXML MenuItem menuNew;
@@ -30,29 +31,16 @@ public class TextEditorController
 	
 	private String path = null;
 	
-	static TextEditorController get() //singleton-ish mostly so the save function can be called from other classes
+	static MainController get() //singleton-ish mostly so the save function can be called from other classes
 	{
-		if (instance == null) instance = new TextEditorController();
+		if (instance == null) instance = new MainController();
 		return instance;
 	}
 	
 	@FXML public void onMenuNew()
 	{
-		newFile();
+		Utility.newFile();
 	} //FXML call to new file method
-	
-	private void newFile() //new file method logic
-	{
-		try
-		{
-			new TextEditor().start(new Stage()); //simply opens new duplicate window, blank
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			System.out.println("Error opening new window");
-		}
-	}
 	
 	@FXML public void onMenuSave()
 	{
@@ -165,10 +153,10 @@ public class TextEditorController
 	
 	@FXML public void onMenuClassReport()
 	{
-		report();
+		classReport();
 	} //FXML call open report window
 	
-	private void report() //open report window logic
+	private void classReport() //open report window logic
 	{
 		try
 		{
@@ -194,12 +182,12 @@ public class TextEditorController
 	{
 		try
 		{
-			Stage studentReport = new Stage(); //new stage for studentReport window
-			studentReport.setTitle("StudentReport"); //sets title
-			studentReport.getIcons().add(new Image("core/icon.png")); //sets icon
-			studentReport.setScene(new Scene(FXMLLoader.load(getClass().getResource("StudentReport_GUI.fxml")))); //sets GUI file
-			studentReport.setAlwaysOnTop(true); //sets to always show on top of desktop (until closed)
-			studentReport.show(); //shows window
+			Stage report = new Stage(); //new stage for report window
+			report.setTitle("StudentReport"); //sets title
+			report.getIcons().add(new Image("core/icon.png")); //sets icon
+			report.setScene(new Scene(FXMLLoader.load(getClass().getResource("StudentReport_GUI.fxml")))); //sets GUI file
+			report.setAlwaysOnTop(true); //sets to always show on top of desktop (until closed)
+			report.show(); //shows window
 		}
 		catch (IOException e)
 		{
@@ -232,9 +220,9 @@ public class TextEditorController
 		}
 	}
 	
-	ArrayList<String> EditorArrayList()
+	List<String> getTextList()
 	{
-		ArrayList<String> list = new ArrayList<>();
+		List<String> list = new ArrayList<>();
 		for (CharSequence line : userText.getParagraphs()) list.add(line.toString());
 		return list;
 	}
