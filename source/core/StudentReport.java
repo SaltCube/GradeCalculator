@@ -7,6 +7,7 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -17,12 +18,12 @@ public class StudentReport implements Initializable
 	
 	@FXML void onReportSaveAs()
 	{
-		MainController.get().save(new FileChooser().showSaveDialog(null)); //opens save as for the report window
+		Utility.save(new FileChooser().showSaveDialog(null), new ArrayList<>() /*placeholder for data*/); //opens save as for the report window
 	} //NEEDS FIX; FXML call for report save
 	
 	@FXML void onReportPrint()
 	{
-		MainController.get().print(new File("C:/File.txt")/* <-this is a placeholder, print report file instead*/);
+		Utility.print(new File("C:/File.txt")/* <-this is a placeholder, print report file instead*/);
 	} //NEEDS FIX; (disabled) FXML call for report print
 	
 	List<String> getReport() //NEEDS FIX

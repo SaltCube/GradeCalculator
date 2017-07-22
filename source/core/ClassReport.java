@@ -18,19 +18,19 @@ public class ClassReport implements Initializable
 	
 	@FXML void onReportSaveAs()
 	{
-		MainController.get().save(new FileChooser().showSaveDialog(null)); //opens save as for the report window
+		Utility.save(new FileChooser().showSaveDialog(null), Utility.textList(reportText)); //opens save as for the report window
 	} //NEEDS FIX; FXML call for report save
 	
 	@FXML void onReportPrint()
 	{
-		MainController.get().print(new File("C:/File.txt")/* <-this is a placeholder, print report file instead*/);
+		Utility.print(new File("C:/File.txt")/* <-this is a placeholder, print report file instead*/);
 	} //NEEDS FIX; (disabled) FXML call for report print
 	
-	void getData()
+	private void getData()
 	{
-		for (String line : Utility.getDataList(Utility.getData(MainController.get().userText)))
+		for (String line : Utility.getDataList(Utility.getData((TextArea) Utility.buffer.get("TextArea"))))
 		{
-			System.out.println(line);
+			reportText.appendText(line + System.getProperty("line.separator"));
 		}
 	}
 	

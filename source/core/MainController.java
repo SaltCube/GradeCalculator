@@ -17,7 +17,7 @@ import java.util.List;
 
 public class MainController
 {
-	private static MainController instance = null;
+	private static MainController instance = new MainController();
 	@FXML MenuItem menuStudentReport;
 	@FXML TextArea userText;
 	@FXML MenuItem menuNew;
@@ -44,39 +44,15 @@ public class MainController
 	
 	@FXML public void onMenuSave()
 	{
-		save(new File(path));
+		Utility.save(new File(path), Utility.textList(userText));
 	} //FXML call to save method
 	
 	@FXML public void onMenuSaveAs()
 	{
-		save(new FileChooser().showSaveDialog(null));
+		File file = new FileChooser().showSaveDialog(null);
+		path = file.getPath();
+		Utility.save(file, Utility.textList(userText));
 	} //FXML call to save as method
-	
-	void save(File file) //save file method logic
-	{
-		if (file == null) file = new File(path);
-		else
-		{
-			String path = file.getPath(); //sets the file path to the opened file
-		}
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter(file)))
-		{
-			for (CharSequence line : userText.getParagraphs())
-				writer.write(line.toString() + System.getProperty("line.separator"));
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-			System.out.println("Error writing to the file");
-			Alert alert = new Alert(Alert.AlertType.ERROR, "Error writing to the file.", ButtonType.OK);
-			alert.showAndWait();
-		}
-		catch (NullPointerException e)
-		{
-			e.printStackTrace();
-			System.out.println("Null pointer error");
-		}
-	}
 	
 	@FXML public void onMenuOpen()
 	{
@@ -153,6 +129,7 @@ public class MainController
 	
 	@FXML public void onMenuClassReport()
 	{
+		Utility.buffer.put("TextArea", userText);
 		classReport();
 	} //FXML call open report window
 	
@@ -169,7 +146,7 @@ public class MainController
 		catch (IOException e)
 		{
 			e.printStackTrace();
-			System.out.println("Something went wrong opening report");
+			System.out.println("Something went wrong opening class report");
 		}
 	}
 	
@@ -192,7 +169,7 @@ public class MainController
 		catch (IOException e)
 		{
 			e.printStackTrace();
-			System.out.println("Something went wrong opening studentReport");
+			System.out.println("Something went wrong opening student report");
 		}
 	}
 	
