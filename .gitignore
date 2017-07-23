@@ -11,7 +11,7 @@
 # Intellij Files #
 .idea/
 *.iml
-out/
+out/production
 source/META-INF/
 test/
 
