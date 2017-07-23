@@ -29,7 +29,7 @@ public class StudentReport implements Initializable
 	
 	List getReport() //NEEDS FIX
 	{
-		//List<String> list = MainController.get().getTextList(); //not inline because not done
+		//List<String> list = Main.get().getTextList(); //not inline because not done
 		//for (String line : list) {}
 		/* placeholder for processing logic */
 		return new ArrayList();

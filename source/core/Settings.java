@@ -20,7 +20,7 @@ public class Settings implements Initializable //Settings is disabled for now
 		if (autoSaveBox.isSelected())
 		{
 			//int time = Integer.parseInt((new BufferedReader(new FileReader(path))).readLine());
-			Thread saveThread = new Thread(() -> MainController.get().save(null));
+			Thread saveThread = new Thread(() -> Main.get().save(null));
 			saveThread.start();
 		}
 	}*/

@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" minHeight="400.0" minWidth="300.0" prefHeight="800.0"
 			prefWidth="1400.0" xmlns="http://javafx.com/javafx/8.0.111"
-			fx:controller="core.MainController">
+			fx:controller="core.Main">
 	<center>
 		<TextArea fx:id="userText" prefHeight="200.0" prefWidth="1400.0"/>
 	</center>
