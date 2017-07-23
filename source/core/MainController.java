@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
@@ -17,25 +18,31 @@ import java.util.List;
 
 public class MainController
 {
+	@FXML Button buttonAbout;
 	@FXML MenuItem menuStudentReport;
 	@FXML TextArea userText;
-	@FXML MenuItem menuNew;
-	@FXML MenuItem menuSave;
-	@FXML MenuItem menuSaveAs;
-	@FXML MenuItem menuOpen;
-	@FXML MenuItem menuSettings;
-	@FXML MenuItem menuAbout;
+	@FXML MenuItem fileNew;
+	@FXML MenuItem fileSave;
+	@FXML MenuItem fileSaveAs;
+	@FXML MenuItem fileOpen;
+	@FXML MenuItem fileSettings;
+	@FXML MenuItem helpAbout;
 	@FXML MenuItem menuClassReport;
-	@FXML MenuItem menuPrint;
+	@FXML MenuItem filePrint;
+	@FXML MenuItem editUndo;
+	@FXML MenuItem editRedo;
+	@FXML MenuItem editPaste;
+	@FXML MenuItem editCopy;
+	@FXML MenuItem editCut;
 	
 	private String path = null;
 	
-	@FXML public void onMenuNew()
+	@FXML public void onFileNew()
 	{
 		IO.newFile();
 	} //FXML call to new file method
 	
-	@FXML public void onMenuSave()
+	@FXML public void onFileSave()
 	{
 		if (path == null)
 		{
@@ -48,14 +55,14 @@ public class MainController
 		else IO.save(new File(path), form.textList(userText));
 	} //FXML call to save method
 	
-	@FXML public void onMenuSaveAs()
+	@FXML public void onFileSaveAs()
 	{
 		File file = new FileChooser().showSaveDialog(null);
 		path = file.getPath();
 		IO.save(file, form.textList(userText));
 	} //FXML call to save as method
 	
-	@FXML public void onMenuOpen()
+	@FXML public void onFileOpen()
 	{
 		try
 		{
@@ -114,12 +121,12 @@ public class MainController
 		}
 	}
 	
-	@FXML public void onMenuPrint() //NEEDS FIX; (disabled) FXML call print method
+	@FXML public void onFilePrint() //NEEDS FIX; (disabled) FXML call print method
 	{
 		IO.print(new File("C:/File.txt") /* <-this is a placeholder, get the current file instead*/);
 	}
 	
-	@FXML public void onMenuSettings()
+	@FXML public void onFileSettings()
 	{
 		settings();
 	} //NEEDS FIX; (currently disabled) FXML call open settings window
@@ -145,6 +152,31 @@ public class MainController
 			alert.setContentText(tracer.stringedTrace(e.getStackTrace()));
 			alert.showAndWait();
 		}
+	}
+	
+	@FXML public void onEditUndo()
+	{
+		userText.undo();
+	}
+	
+	@FXML public void onEditRedo()
+	{
+		userText.redo();
+	}
+	
+	@FXML public void onEditCut()
+	{
+		userText.cut();
+	}
+	
+	@FXML public void onEditCopy()
+	{
+		userText.copy();
+	}
+	
+	@FXML public void onEditPaste()
+	{
+		userText.paste();
 	}
 	
 	@FXML public void onMenuClassReport()
@@ -225,7 +257,7 @@ public class MainController
 		}
 	}
 	
-	@FXML public void onMenuAbout()
+	@FXML public void onHelpAbout()
 	{
 		about();
 	} //FXML call open about window
@@ -259,5 +291,10 @@ public class MainController
 		List<String> list = new ArrayList<>();
 		for (CharSequence line : userText.getParagraphs()) list.add(line.toString());
 		return list;
+	}
+	
+	public void onButtonAbout()
+	{
+		about();
 	}
 }
