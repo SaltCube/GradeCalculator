@@ -6,6 +6,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
+import utlity.tracer;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -32,14 +33,14 @@ public class About implements Initializable
 			Alert alert = new Alert(Alert.AlertType.ERROR);
 			alert.setTitle("Error");
 			alert.setHeaderText("Couldn't open default browser");
-			alert.setContentText(utility.stringedTrace(e.getStackTrace()));
+			alert.setContentText(tracer.stringedTrace(e.getStackTrace()));
 			alert.showAndWait();
 		}
 	}
 	
 	@FXML public void closePressed() //on "close" button pressed
 	{
-		((Stage) closeButton.getScene().getWindow()).close(); //close the window
+		((Stage)closeButton.getScene().getWindow()).close(); //close the window
 	}
 	
 	@Override public void initialize(URL location, ResourceBundle resources)

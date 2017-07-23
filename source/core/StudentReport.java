@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.stage.FileChooser;
+import utlity.IO;
 
 import java.io.File;
 import java.net.URL;
@@ -18,20 +19,20 @@ public class StudentReport implements Initializable
 	
 	@FXML void onReportSaveAs()
 	{
-		utility.save(new FileChooser().showSaveDialog(null), new ArrayList<>() /*placeholder for data*/); //opens save as for the report window
+		IO.save(new FileChooser().showSaveDialog(null), new ArrayList<>() /*placeholder for data*/); //opens save as for the report window
 	} //NEEDS FIX; FXML call for report save
 	
 	@FXML void onReportPrint()
 	{
-		utility.print(new File("C:/File.txt")/* <-this is a placeholder, print report file instead*/);
+		IO.print(new File("C:/File.txt")/* <-this is a placeholder, print report file instead*/);
 	} //NEEDS FIX; (disabled) FXML call for report print
 	
-	List<String> getReport() //NEEDS FIX
+	List getReport() //NEEDS FIX
 	{
-		List<String> list = MainController.get().getTextList(); //not inline because not done
+		//List<String> list = MainController.get().getTextList(); //not inline because not done
 		//for (String line : list) {}
 		/* placeholder for processing logic */
-		return list;
+		return new ArrayList();
 	}
 	
 	@Override public void initialize(URL location, ResourceBundle resources) {}

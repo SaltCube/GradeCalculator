@@ -1,62 +1,19 @@
-package core;
+package utlity;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextArea;
-import javafx.stage.Stage;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.*;
-class utility //utility class
+public class form
 {
-	static Map<String, Object> buffer = new HashMap<>();
-
-	static void newFile()
-	{
-		try
-		{
-			new Main().start(new Stage()); //simply opens new duplicate window, blank
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			System.err.println("Error opening new window");
-		}
-	}
-	
-	static void save(File file, List<String> data) //save file method logic
-	{
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter(file)))
-		{
-			for (String line : data)
-				writer.write(line + System.getProperty("line.separator"));
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-			System.err.println("Error writing to the file");
-			Alert alert = new Alert(Alert.AlertType.ERROR, "Error writing to the file.", ButtonType.OK);
-			alert.showAndWait();
-		}
-		catch (NullPointerException e)
-		{
-			e.printStackTrace();
-			System.err.println("Null pointer error");
-		}
-	}
-	
-	static List<String> textList(TextArea textArea)
+	public static List<String> textList(TextArea textArea)
 	{
 		List<String> data = new ArrayList<>();
 		for (CharSequence line : textArea.getParagraphs()) data.add(line.toString());
 		return data;
 	}
 	
-	static List<String> getStudentsList(Map<String, LinkedHashMap<String, List<Integer>>> students)
+	public static List<String> getStudentsList(Map<String, LinkedHashMap<String, List<Integer>>> students)
 	{
 		List<String> data = new ArrayList<>();
 		for (Map.Entry<String, LinkedHashMap<String, List<Integer>>> bigGrades : students.entrySet())
@@ -75,12 +32,7 @@ class utility //utility class
 		return data;
 	}
 	
-	static void print(File file) //NEEDS FIX
-	{
-	
-	}
-	
-	static Map<String, LinkedHashMap<String, List<Integer>>> getStudents(TextArea textArea)
+	public static Map<String, LinkedHashMap<String, List<Integer>>> getStudents(TextArea textArea)
 	{
 		Map<String, LinkedHashMap<String, List<Integer>>> students = new LinkedHashMap<>();
 		String[] labels = new String[0];
@@ -120,7 +72,7 @@ class utility //utility class
 		return students;
 	}
 	
-	static Map<String, List> formatData(TextArea textArea)
+	public static Map<String, List> formatData(TextArea textArea)
 	{
 		Map<String, List> formats = new HashMap<>();
 		//new FileChooser().showOpenDialog(null)
@@ -143,7 +95,7 @@ class utility //utility class
 		return formats;
 	}
 	
-	@NotNull static Map[] parseData(TextArea textArea)
+	@NotNull public static Map[] parseData(TextArea textArea)
 	{
 		Map<String, List> formats = new HashMap<>();
 		Map<String, LinkedHashMap<String, List<Integer>>> students = new LinkedHashMap<>();
@@ -191,7 +143,7 @@ class utility //utility class
 		return new Map[]{formats, students};
 	}
 	
-	@NotNull static List[] listData(Map[] data)
+	@NotNull public static List[] listData(Map[] data)
 	{
 		List<String> formats = new ArrayList<>();
 		List<String> students = new ArrayList<>();
@@ -210,41 +162,8 @@ class utility //utility class
 		return new List[]{formats, students};
 	}
 	
-	@NotNull static String digest(String line) //de-comments lines and removes any non-parsable special characters
+	@NotNull public static String digest(String line) //de-comments lines and removes any non-parsable special characters
 	{
 		return line.split("//")[0].replaceAll("[^A-Za-z0-9:,.* \\-]|/\\\\*.*/\\\\*", "");
 	}
-	
-	static String stringedTrace(StackTraceElement[] array)
-	{
-		StringBuilder stringBuilder = new StringBuilder();
-		for (StackTraceElement line : array)
-		{
-			String stringLine = line.toString();
-			if (stringLine.contains("core"))
-				stringBuilder.append(stringLine).append("\n");//just append the immediately relevant
-			else System.out.println(colors.YELLOW + "\t\t(util-tracer)\t" + stringLine + colors.RESET);
-		}
-		return stringBuilder.toString();
-	}
-	
-	final static class colors
-	{
-		static final String RESET = "\u001B[0m";
-		static final String BLACK = "\u001B[30m";
-		static final String RED = "\u001B[31m";
-		static final String GREEN = "\u001B[32m";
-		static final String YELLOW = "\u001B[33m";
-		static final String BLUE = "\u001B[34m";
-		static final String PURPLE = "\u001B[35m";
-		static final String CYAN = "\u001B[36m";
-		static final String WHITE = "\u001B[37m";
-	}
-	/*
-	Alert alert = new Alert(Alert.AlertType.ERROR);
-	alert.setTitle("Error");
-	alert.setHeaderText("Test error");
-	alert.setContentText(utility.stringedTrace(exception.getStackTrace()));
-	alert.showAndWait();
-	*/
 }

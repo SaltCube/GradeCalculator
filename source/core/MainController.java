@@ -9,6 +9,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import utlity.*;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -16,7 +17,6 @@ import java.util.List;
 
 public class MainController
 {
-	private static MainController instance = new MainController();
 	@FXML MenuItem menuStudentReport;
 	@FXML TextArea userText;
 	@FXML MenuItem menuNew;
@@ -30,15 +30,9 @@ public class MainController
 	
 	private String path = null;
 	
-	static MainController get() //singleton-ish mostly so the save function can be called from other classes
-	{
-		if (instance == null) instance = new MainController();
-		return instance;
-	}
-	
 	@FXML public void onMenuNew()
 	{
-		utility.newFile();
+		IO.newFile();
 	} //FXML call to new file method
 	
 	@FXML public void onMenuSave()
@@ -51,14 +45,14 @@ public class MainController
 			alert.setContentText("No file specified to save new data to.\nFile path is null.");
 			alert.showAndWait();
 		}
-		else utility.save(new File(path), utility.textList(userText));
+		else IO.save(new File(path), form.textList(userText));
 	} //FXML call to save method
 	
 	@FXML public void onMenuSaveAs()
 	{
 		File file = new FileChooser().showSaveDialog(null);
 		path = file.getPath();
-		utility.save(file, utility.textList(userText));
+		IO.save(file, form.textList(userText));
 	} //FXML call to save as method
 	
 	@FXML public void onMenuOpen()
@@ -70,11 +64,11 @@ public class MainController
 		catch (NullPointerException e)
 		{
 			//exception.printStackTrace();
-			System.out.println(utility.colors.CYAN + e + utility.colors.RESET);
+			System.out.println(color.cyan + e.toString() + color.reset);
 			Alert alert = new Alert(Alert.AlertType.ERROR);
 			alert.setTitle("Error");
 			alert.setHeaderText("Test error");
-			alert.setContentText(utility.stringedTrace(e.getStackTrace()));
+			alert.setContentText(tracer.stringedTrace(e.getStackTrace()));
 			alert.showAndWait();
 		}
 	} //FXML call to open file
@@ -100,7 +94,7 @@ public class MainController
 			Alert alert = new Alert(Alert.AlertType.ERROR);
 			alert.setTitle("Error");
 			alert.setHeaderText("Couldn't open file specified");
-			alert.setContentText(utility.stringedTrace(e.getStackTrace()));
+			alert.setContentText(tracer.stringedTrace(e.getStackTrace()));
 			alert.showAndWait();
 		}
 		catch (IOException e)
@@ -110,7 +104,7 @@ public class MainController
 			Alert alert = new Alert(Alert.AlertType.ERROR, "Error reading the file.");
 			alert.setTitle("Error");
 			alert.setHeaderText("Couldn't read the file specified");
-			alert.setContentText(utility.stringedTrace(e.getStackTrace()));
+			alert.setContentText(tracer.stringedTrace(e.getStackTrace()));
 			alert.showAndWait();
 		}
 		catch (NullPointerException e)
@@ -122,7 +116,7 @@ public class MainController
 	
 	@FXML public void onMenuPrint() //NEEDS FIX; (disabled) FXML call print method
 	{
-		utility.print(new File("C:/File.txt") /* <-this is a placeholder, get the current file instead*/);
+		IO.print(new File("C:/File.txt") /* <-this is a placeholder, get the current file instead*/);
 	}
 	
 	@FXML public void onMenuSettings()
@@ -148,14 +142,14 @@ public class MainController
 			Alert alert = new Alert(Alert.AlertType.ERROR);
 			alert.setTitle("Error");
 			alert.setHeaderText("Couldn't open settings");
-			alert.setContentText(utility.stringedTrace(e.getStackTrace()));
+			alert.setContentText(tracer.stringedTrace(e.getStackTrace()));
 			alert.showAndWait();
 		}
 	}
 	
 	@FXML public void onMenuClassReport()
 	{
-		utility.buffer.put("TextArea", userText);
+		buffer.buffer.put("TextArea", userText);
 		classReport();
 	} //FXML call open report window
 	
@@ -187,7 +181,7 @@ public class MainController
 			Alert alert = new Alert(Alert.AlertType.ERROR);
 			alert.setTitle("Error");
 			alert.setHeaderText("Couldn't open class report");
-			alert.setContentText(utility.stringedTrace(e.getStackTrace()));
+			alert.setContentText(tracer.stringedTrace(e.getStackTrace()));
 			alert.showAndWait();
 		}
 	}
@@ -226,7 +220,7 @@ public class MainController
 			Alert alert = new Alert(Alert.AlertType.ERROR);
 			alert.setTitle("Error");
 			alert.setHeaderText("Couldn't open student report");
-			alert.setContentText(utility.stringedTrace(e.getStackTrace()));
+			alert.setContentText(tracer.stringedTrace(e.getStackTrace()));
 			alert.showAndWait();
 		}
 	}
@@ -255,7 +249,7 @@ public class MainController
 			Alert alert = new Alert(Alert.AlertType.ERROR);
 			alert.setTitle("Error");
 			alert.setHeaderText("Couldn't open about");
-			alert.setContentText(utility.stringedTrace(e.getStackTrace()));
+			alert.setContentText(tracer.stringedTrace(e.getStackTrace()));
 			alert.showAndWait();
 		}
 	}

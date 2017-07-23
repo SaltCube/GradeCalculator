@@ -5,6 +5,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
+import utlity.IO;
+import utlity.buffer;
+import utlity.form;
 
 import java.io.File;
 import java.net.URL;
@@ -19,17 +22,17 @@ public class ClassReport implements Initializable
 	
 	@FXML void onReportSaveAs()
 	{
-		utility.save(new FileChooser().showSaveDialog(null), utility.textList(reportText)); //opens save as for the report window
+		IO.save(new FileChooser().showSaveDialog(null), form.textList(reportText)); //opens save as for the report window
 	} //NEEDS FIX; FXML call for report save
 	
 	@FXML void onReportPrint()
 	{
-		utility.print(new File("C:/File.txt")/* <-this is a placeholder, print report file instead*/);
+		IO.print(new File("C:/File.txt")/* <-this is a placeholder, print report file instead*/);
 	} //NEEDS FIX; (disabled) FXML call for report print
 	
 	private void getData()
 	{
-		for (Object line : (List<String>)utility.listData(utility.parseData((TextArea)utility.buffer.get("TextArea")))[1])
+		for (Object line : (List<String>)form.listData(form.parseData((TextArea)buffer.buffer.get("TextArea")))[1])
 			reportText.appendText(line + System.getProperty("line.separator"));
 	}
 	
