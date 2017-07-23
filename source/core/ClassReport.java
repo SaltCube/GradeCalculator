@@ -5,9 +5,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
-import utlity.IO;
-import utlity.buffer;
-import utlity.form;
+import utility.IO;
+import utility.buffer;
+import utility.form;
 
 import java.io.File;
 import java.net.URL;

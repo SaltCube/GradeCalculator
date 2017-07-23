@@ -1,4 +1,4 @@
-package utlity;
+package utility;
 
 import javafx.scene.control.TextArea;
 import org.jetbrains.annotations.NotNull;

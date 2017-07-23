@@ -9,7 +9,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import utlity.*;
+import utility.*;
 
 import java.io.*;
 import java.util.ArrayList;

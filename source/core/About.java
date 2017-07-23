@@ -6,7 +6,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
-import utlity.tracer;
+import utility.tracer;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
