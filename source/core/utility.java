@@ -226,7 +226,7 @@ class utility //utility class
 			else System.out.println(colors.YELLOW + "\t\t(util-tracer)\t" + stringLine + colors.RESET);
 		}
 		return stringBuilder.toString();
-		//returns only minimum stuff
+		//returns only minimum
 	}
 	
 	final static class colors
