@@ -10,7 +10,11 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import utility.*;
+import javafx.stage.Window;
+import utility.IO;
+import utility.buffer;
+import utility.form;
+import utility.tracer;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -36,7 +40,6 @@ public class MainController
 	@FXML MenuItem editCut;
 	
 	private String path = null;
-	
 	@FXML public void onFileNew()
 	{
 		IO.newFile();
@@ -57,27 +60,15 @@ public class MainController
 	
 	@FXML public void onFileSaveAs()
 	{
-		File file = new FileChooser().showSaveDialog(null);
+		
+		File file = new FileChooser().showSaveDialog((Window)buffer.buffer.get("MainStage"));
 		path = file.getPath();
 		IO.save(file, form.textList(userText));
 	} //FXML call to save as method
 	
 	@FXML public void onFileOpen()
 	{
-		try
-		{
-			open(new FileChooser().showOpenDialog(null));
-		}
-		catch (NullPointerException e)
-		{
-			//exception.printStackTrace();
-			System.out.println(color.cyan + e.toString() + color.reset);
-			Alert alert = new Alert(Alert.AlertType.ERROR);
-			alert.setTitle("Error");
-			alert.setHeaderText("Test error");
-			alert.setContentText(tracer.stringedTrace(e.getStackTrace()));
-			alert.showAndWait();
-		}
+		open(new FileChooser().showOpenDialog((Window)buffer.buffer.get("MainStage")));
 	} //FXML call to open file
 	
 	private void open(File file) //open file method logic
@@ -271,6 +262,7 @@ public class MainController
 			about.getIcons().add(new Image("core/icon.png")); //sets icon
 			about.setScene(new Scene(FXMLLoader.load(getClass().getResource("About_GUI.fxml")))); //sets GUI file
 			about.setResizable(false); //sets the window to not be resizable
+			//about.initModality(Modality.APPLICATION_MODAL);
 			about.setAlwaysOnTop(true); //sets to always show on top of desktop (until closed)
 			about.show(); //shows window
 		}
