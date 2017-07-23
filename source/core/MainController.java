@@ -4,7 +4,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
@@ -39,24 +38,45 @@ public class MainController
 	
 	@FXML public void onMenuNew()
 	{
-		Utility.newFile();
+		utility.newFile();
 	} //FXML call to new file method
 	
 	@FXML public void onMenuSave()
 	{
-		Utility.save(new File(path), Utility.textList(userText));
+		if (path == null)
+		{
+			Alert alert = new Alert(Alert.AlertType.WARNING);
+			alert.setTitle("Save failed");
+			alert.setHeaderText("There is nothing to save");
+			alert.setContentText("No file specified to save new data to.\nFile path is null.");
+			alert.showAndWait();
+		}
+		else utility.save(new File(path), utility.textList(userText));
 	} //FXML call to save method
 	
 	@FXML public void onMenuSaveAs()
 	{
 		File file = new FileChooser().showSaveDialog(null);
 		path = file.getPath();
-		Utility.save(file, Utility.textList(userText));
+		utility.save(file, utility.textList(userText));
 	} //FXML call to save as method
 	
 	@FXML public void onMenuOpen()
 	{
-		open(new FileChooser().showOpenDialog(null));
+		try
+		{
+			open(new FileChooser().showOpenDialog(null));
+		}
+		catch (NullPointerException e)
+		{
+			//exception.printStackTrace();
+			System.out.println(utility.colors.CYAN + e + utility.colors.RESET);
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setTitle("Error");
+			alert.setHeaderText("Test error");
+			alert.setContentText(utility.stringedTrace(e.getStackTrace()));
+			alert.showAndWait();
+		}
 	} //FXML call to open file
 	
 	private void open(File file) //open file method logic
@@ -76,32 +96,33 @@ public class MainController
 		catch (FileNotFoundException e)
 		{
 			e.printStackTrace();
-			System.out.println("Error finding the file");
-			Alert alert = new Alert(Alert.AlertType.ERROR, "Error finding the file.", ButtonType.OK);
+			System.err.println("Error finding the file");
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setTitle("Error");
+			alert.setHeaderText("Couldn't open file specified");
+			alert.setContentText(utility.stringedTrace(e.getStackTrace()));
 			alert.showAndWait();
 		}
 		catch (IOException e)
 		{
 			e.printStackTrace();
-			System.out.println("Error reading the file");
-			Alert alert = new Alert(Alert.AlertType.ERROR, "Error reading the file.", ButtonType.OK);
+			System.err.println("Error reading the file");
+			Alert alert = new Alert(Alert.AlertType.ERROR, "Error reading the file.");
+			alert.setTitle("Error");
+			alert.setHeaderText("Couldn't read the file specified");
+			alert.setContentText(utility.stringedTrace(e.getStackTrace()));
 			alert.showAndWait();
 		}
 		catch (NullPointerException e)
 		{
 			e.printStackTrace();
-			System.out.println("Null pointer error");
+			System.err.println("Null pointer error");
 		}
 	}
 	
 	@FXML public void onMenuPrint() //NEEDS FIX; (disabled) FXML call print method
 	{
-		print(new File("C:/File.txt") /* <-this is a placeholder, get the current file instead*/);
-	}
-	
-	void print(File file) //print method logic
-	{
-		/* print the file passed */
+		utility.print(new File("C:/File.txt") /* <-this is a placeholder, get the current file instead*/);
 	}
 	
 	@FXML public void onMenuSettings()
@@ -123,13 +144,18 @@ public class MainController
 		catch (IOException e)
 		{
 			e.printStackTrace();
-			System.out.println("something went wrong opening settings");
+			System.err.println("Something went wrong opening settings");
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setTitle("Error");
+			alert.setHeaderText("Couldn't open settings");
+			alert.setContentText(utility.stringedTrace(e.getStackTrace()));
+			alert.showAndWait();
 		}
 	}
 	
 	@FXML public void onMenuClassReport()
 	{
-		Utility.buffer.put("TextArea", userText);
+		utility.buffer.put("TextArea", userText);
 		classReport();
 	} //FXML call open report window
 	
@@ -137,16 +163,32 @@ public class MainController
 	{
 		try
 		{
-			Stage report = new Stage(); //opens a new stage for the report window
-			report.setTitle("ClassReport"); //sets title
-			report.getIcons().add(new Image("core/icon.png")); //sets icon
-			report.setScene(new Scene(FXMLLoader.load(getClass().getResource("ClassReport_GUI.fxml")))); //sets GUI file
-			report.show(); //shows window
+			if (userText.getParagraphs().size() < 8)
+			{
+				Alert alert = new Alert(Alert.AlertType.INFORMATION);
+				alert.setTitle("Report failed");
+				alert.setHeaderText("No data to parse");
+				alert.setContentText("Could not parse the class report because there was insufficient data to generate a report from");
+				alert.showAndWait();
+			}
+			else
+			{
+				Stage report = new Stage(); //opens a new stage for the report window
+				report.setTitle("ClassReport"); //sets title
+				report.getIcons().add(new Image("core/icon.png")); //sets icon
+				report.setScene(new Scene(FXMLLoader.load(getClass().getResource("ClassReport_GUI.fxml")))); //sets GUI file
+				report.show(); //shows window
+			}
 		}
 		catch (IOException e)
 		{
 			e.printStackTrace();
-			System.out.println("Something went wrong opening class report");
+			System.err.println("Something went wrong opening class report");
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setTitle("Error");
+			alert.setHeaderText("Couldn't open class report");
+			alert.setContentText(utility.stringedTrace(e.getStackTrace()));
+			alert.showAndWait();
 		}
 	}
 	
@@ -159,17 +201,33 @@ public class MainController
 	{
 		try
 		{
-			Stage report = new Stage(); //new stage for report window
-			report.setTitle("StudentReport"); //sets title
-			report.getIcons().add(new Image("core/icon.png")); //sets icon
-			report.setScene(new Scene(FXMLLoader.load(getClass().getResource("StudentReport_GUI.fxml")))); //sets GUI file
-			report.setAlwaysOnTop(true); //sets to always show on top of desktop (until closed)
-			report.show(); //shows window
+			if (userText.getParagraphs().size() < 8)
+			{
+				Alert alert = new Alert(Alert.AlertType.INFORMATION);
+				alert.setTitle("Report failed");
+				alert.setHeaderText("No data to parse");
+				alert.setContentText("Could not parse the student report because there was insufficient data to generate a report from");
+				alert.showAndWait();
+			}
+			else
+			{
+				Stage report = new Stage(); //new stage for report window
+				report.setTitle("StudentReport"); //sets title
+				report.getIcons().add(new Image("core/icon.png")); //sets icon
+				report.setScene(new Scene(FXMLLoader.load(getClass().getResource("StudentReport_GUI.fxml")))); //sets GUI file
+				report.setAlwaysOnTop(true); //sets to always show on top of desktop (until closed)
+				report.show(); //shows window
+			}
 		}
 		catch (IOException e)
 		{
 			e.printStackTrace();
-			System.out.println("Something went wrong opening student report");
+			System.err.println("Something went wrong opening student report");
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setTitle("Error");
+			alert.setHeaderText("Couldn't open student report");
+			alert.setContentText(utility.stringedTrace(e.getStackTrace()));
+			alert.showAndWait();
 		}
 	}
 	
@@ -193,7 +251,12 @@ public class MainController
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			System.out.println("Something went wrong opening about");
+			System.err.println("Something went wrong opening about");
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setTitle("Error");
+			alert.setHeaderText("Couldn't open about");
+			alert.setContentText(utility.stringedTrace(e.getStackTrace()));
+			alert.showAndWait();
 		}
 	}
 	
