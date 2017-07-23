@@ -4,7 +4,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
@@ -29,7 +28,11 @@ public class About implements Initializable
 		catch (IOException | URISyntaxException e)
 		{
 			e.printStackTrace();
-			Alert alert = new Alert(Alert.AlertType.ERROR, "Error opening browser", ButtonType.OK);
+			System.err.println("Something went wrong opening GitHub page");
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setTitle("Error");
+			alert.setHeaderText("Couldn't open default browser");
+			alert.setContentText(utility.stringedTrace(e.getStackTrace()));
 			alert.showAndWait();
 		}
 	}

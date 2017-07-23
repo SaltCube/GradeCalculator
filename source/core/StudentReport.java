@@ -18,12 +18,12 @@ public class StudentReport implements Initializable
 	
 	@FXML void onReportSaveAs()
 	{
-		Utility.save(new FileChooser().showSaveDialog(null), new ArrayList<>() /*placeholder for data*/); //opens save as for the report window
+		utility.save(new FileChooser().showSaveDialog(null), new ArrayList<>() /*placeholder for data*/); //opens save as for the report window
 	} //NEEDS FIX; FXML call for report save
 	
 	@FXML void onReportPrint()
 	{
-		Utility.print(new File("C:/File.txt")/* <-this is a placeholder, print report file instead*/);
+		utility.print(new File("C:/File.txt")/* <-this is a placeholder, print report file instead*/);
 	} //NEEDS FIX; (disabled) FXML call for report print
 	
 	List<String> getReport() //NEEDS FIX

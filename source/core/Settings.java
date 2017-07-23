@@ -36,7 +36,7 @@ public class Settings implements Initializable //Settings is disabled for now
 		catch (FileNotFoundException e)
 		{
 			e.printStackTrace();
-			System.out.println("settings file not found");
+			System.err.println("settings file not found");
 		}
 	}
 	
@@ -48,6 +48,7 @@ public class Settings implements Initializable //Settings is disabled for now
 		}
 		catch (IOException e)
 		{
+			System.err.println("Error saving settings changes");
 			e.printStackTrace();
 		}
 	}
