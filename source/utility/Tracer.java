@@ -1,6 +1,7 @@
 package utility;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 public class Tracer
 {
@@ -32,9 +33,7 @@ public class Tracer
 	
 	private static String stringedElements(StackTraceElement[] array)
 	{
-		StringBuilder stringBuilder = new StringBuilder();
-		for (StackTraceElement line : array) stringBuilder.append(line.toString()).append("\n");
-		return stringBuilder.toString();
+		return form.listString(Arrays.asList(array));
 	}
 	
 	public Exception getException()
