@@ -6,7 +6,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
-import utility.tracer;
+import utility.Tracer;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -33,7 +33,7 @@ public class About implements Initializable
 			Alert alert = new Alert(Alert.AlertType.ERROR);
 			alert.setTitle("Error");
 			alert.setHeaderText("Couldn't open default browser");
-			alert.setContentText(tracer.stringedTrace(e.getStackTrace()));
+			alert.setContentText(new Tracer(e).toString());
 			alert.showAndWait();
 		}
 	}

@@ -30,15 +30,23 @@ public class ClassReport implements Initializable
 		IO.print(new File("C:/File.txt")/* <-this is a placeholder, print report file instead*/);
 	} //NEEDS FIX; (disabled) FXML call for report print
 	
-	private void getData()
+	private void showStudentData()
 	{
-		for (Object line : (List<String>)form.listData(form.parseData((TextArea)buffer.buffer.get("TextArea")))[1])
+		for (Object line : (List<String>)form.listData(form.parseData((TextArea)buffer.objects.get("TextArea")))[1])
 			reportText.appendText(line + System.getProperty("line.separator"));
 	}
 	
+	private void showReport()
+	{
+	
+	}
 	@Override public void initialize(URL location, ResourceBundle resources)
 	{
 		reportText.setEditable(false); //make text not editable
-		getData();
+		showReport();
+		reportText.appendText("\n\n");
+		reportText.appendText("————————————————");
+		reportText.appendText("\n\n");
+		showStudentData();
 	}
 }

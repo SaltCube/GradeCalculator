@@ -12,9 +12,9 @@ import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import utility.IO;
+import utility.Tracer;
 import utility.buffer;
 import utility.form;
-import utility.tracer;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -76,7 +76,19 @@ public class Main extends Application
 	
 	@FXML public void onFileOpen()
 	{
-		open(new FileChooser().showOpenDialog(userText.getScene().getWindow()));
+		try
+		{
+			open(new FileChooser().showOpenDialog(userText.getScene().getWindow()));
+		}
+		catch (Exception e)
+		{
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setTitle("Error");
+			alert.setHeaderText("null pointer error");
+			Tracer tracer = new Tracer(e);
+			alert.setContentText(tracer.toString());
+			alert.showAndWait();
+		}
 	} //FXML call to open file
 	
 	private void open(File file) //open file method logic
@@ -100,7 +112,7 @@ public class Main extends Application
 			Alert alert = new Alert(Alert.AlertType.ERROR);
 			alert.setTitle("Error");
 			alert.setHeaderText("Couldn't open file specified");
-			alert.setContentText(tracer.stringedTrace(e.getStackTrace()));
+			alert.setContentText(new Tracer(e).toString());
 			alert.showAndWait();
 		}
 		catch (IOException e)
@@ -110,7 +122,7 @@ public class Main extends Application
 			Alert alert = new Alert(Alert.AlertType.ERROR, "Error reading the file.");
 			alert.setTitle("Error");
 			alert.setHeaderText("Couldn't read the file specified");
-			alert.setContentText(tracer.stringedTrace(e.getStackTrace()));
+			alert.setContentText(new Tracer(e).toString());
 			alert.showAndWait();
 		}
 		catch (NullPointerException e) //when cancel is pressed
@@ -148,7 +160,7 @@ public class Main extends Application
 			Alert alert = new Alert(Alert.AlertType.ERROR);
 			alert.setTitle("Error");
 			alert.setHeaderText("Couldn't open settings");
-			alert.setContentText(tracer.stringedTrace(e.getStackTrace()));
+			alert.setContentText(new Tracer(e).toString());
 			alert.showAndWait();
 		}
 	}
@@ -180,7 +192,7 @@ public class Main extends Application
 	
 	@FXML public void onMenuClassReport()
 	{
-		buffer.buffer.put("TextArea", userText);
+		buffer.objects.put("TextArea", userText);
 		classReport();
 	} //FXML call open report window
 	
@@ -212,7 +224,7 @@ public class Main extends Application
 			Alert alert = new Alert(Alert.AlertType.ERROR);
 			alert.setTitle("Error");
 			alert.setHeaderText("Couldn't open class report");
-			alert.setContentText(tracer.stringedTrace(e.getStackTrace()));
+			alert.setContentText(new Tracer(e).toString());
 			alert.showAndWait();
 		}
 	}
@@ -251,7 +263,7 @@ public class Main extends Application
 			Alert alert = new Alert(Alert.AlertType.ERROR);
 			alert.setTitle("Error");
 			alert.setHeaderText("Couldn't open student report");
-			alert.setContentText(tracer.stringedTrace(e.getStackTrace()));
+			alert.setContentText(new Tracer(e).toString());
 			alert.showAndWait();
 		}
 	}
@@ -261,6 +273,10 @@ public class Main extends Application
 		about();
 	} //FXML call open about window
 	
+	@FXML public void onButtonAbout()
+	{
+		about();
+	}
 	private void about() //open about window logic
 	{
 		try
@@ -281,20 +297,15 @@ public class Main extends Application
 			Alert alert = new Alert(Alert.AlertType.ERROR);
 			alert.setTitle("Error");
 			alert.setHeaderText("Couldn't open about");
-			alert.setContentText(tracer.stringedTrace(e.getStackTrace()));
+			alert.setContentText(new Tracer(e).toString());
 			alert.showAndWait();
 		}
 	}
 	
-	private List<String> getTextList()
+	private List<String> getTextList(TextArea textArea)
 	{
 		List<String> list = new ArrayList<>();
-		for (CharSequence line : userText.getParagraphs()) list.add(line.toString());
+		for (CharSequence line : textArea.getParagraphs()) list.add(line.toString());
 		return list;
-	}
-	
-	public void onButtonAbout()
-	{
-		about();
 	}
 }
