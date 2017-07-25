@@ -39,16 +39,30 @@ public class ClassReport implements Initializable
 	private Map<String, List> formats = (HashMap<String, List>)data[0];
 	private Map<String, LinkedHashMap<String, List<Float>>> students = (LinkedHashMap<String, LinkedHashMap<String, List<Float>>>)data[1];
 	private int studentCount = students.keySet().size();
+	private List<String> labels = new ArrayList<>(formats.get("labels"));
+	private int labelCount = labels.size();
+	private List<Integer> drops = new ArrayList<>(formats.get("drops"));
+	private List<Float> weights = new ArrayList<>(formats.get("weights"));
+	private List<Character> letters = (ArrayList<Character>)formats.get("letters");
+	private int letterCount = letters.size();
+	private List<Float> cutoffs = (ArrayList<Float>)formats.get("cutoffs");
+	private Map<String, Integer> gradeLabelCounts = new LinkedHashMap<>();
+	private List<String> warningData = new ArrayList<>();
+	private List<Character> classLetters = new ArrayList<>(letterCount);
 
 	private void showReport()
 	{
 		String[] data = reportData();
-		reportText.appendText("COMMENTS:\n");
+		reportText.appendText("COMMENTS———————————————————————\n");
 		reportText.appendText(data[0]);
-		reportText.appendText("————————————————\n");
+		reportText.appendText("\nNOTES——————————————————————————\n");
+		reportText.appendText(data[1]);
+		reportText.appendText("\nGRADES—————————————————————————\n");
 		reportText.appendText(data[2]);
-		//System.out.println(data.length);
-		//for(String chunk : data) reportText.appendText(chunk + "\n");
+		reportText.appendText("\nLETTER-COUNTS——————————————————\n");
+		reportText.appendText(data[3]);
+		reportText.appendText("\nWARNINGS———————————————————————\n");
+		//reportText.appendText(data[4]);
 	}
 	
 	private String[] reportData()
@@ -56,10 +70,35 @@ public class ClassReport implements Initializable
 		String[] dataStrings = new String[5];
 		dataStrings[0] = form.listString((List)buffer.objects.get("comments")); //comment data
 		dataStrings[2] = form.listString(Arrays.asList(studentData())); //student data
-		//dataStrings[1] =
-		//dataStrings[3]
-		//dataStrings[4]
+		dataStrings[1] = form.listString(Arrays.asList(noteData())); //note data
+		dataStrings[3] = form.listString(letterData()); //letter count data
+		dataStrings[4] = form.listString(warningData); //students' warning data
 		return dataStrings;
+	}
+	
+	private List<String> letterData()
+	{
+		List<String> letterData = new ArrayList<>(letterCount);
+		for (char letter : letters) letterData.add(letter + " count: " + Collections.frequency(classLetters, letter));
+		return letterData;
+	}
+	
+	private String[] noteData()
+	{
+		String[] notes = new String[labelCount];
+		for (int i = 0; i < labels.size(); i++)
+		{
+			String label = labels.get(i);
+			int drop = drops.get(i);
+			notes[i] = (new StringBuilder(3))
+					   .append(label.endsWith("s") ? label + " are" : label + " is")
+					   .append(" weighed at ")
+					   .append(weights.get(i))
+					   .append(" and ")
+					   .append((drop == 1) ? drop + " drops" : drop + " drop")
+					   .toString();
+		}
+		return notes;
 	}
 	
 	private String[] studentData()
@@ -71,32 +110,45 @@ public class ClassReport implements Initializable
 	}
 	
 	private String[] studentArray = students.keySet().toArray(new String[studentCount]);
+	
 	private String studentString(int index) //for example- Student A: [95 98 100 80 100 70 100], [66 77], [92] -> 84.8 = B
 	{
 		String student = studentArray[index];
-		Map studentData = students.get(student);
+		Map<String, List<Float>> studentData = students.get(student);
 		StringBuilder gradeData = new StringBuilder();
 		for (Object entryObject : studentData.entrySet())
 		{
 			Map.Entry<String, List<Float>> entry = (Map.Entry<String, List<Float>>)entryObject;
 			gradeData.append(entry.getValue()).append(" ");
 		}
-		return student + ": " + gradeData.toString() + gradeString(studentData);
+		return student + ": " + gradeData.toString() + gradeString(student, studentData);
 	}
 	
-	private String gradeString(Map<String, List<Float>> studentData)
+	private void setGradeLabelCounts()
 	{
-		List<String> labels = new ArrayList<>(formats.get("labels"));
-		List<Integer> drops = new ArrayList<>(formats.get("drops"));
-		List<Float> weights = new ArrayList<>(formats.get("weights"));
-		assert labels.size() == drops.size() & labels.size() == weights.size(); //change to popup later
+		//int studentGradeCount = studentGrades.size();
+		//if(studentGradeCount >= gradeLabelCounts.get(label)) gradeLabelCounts.put(label, studentGradeCount);
+		//else warningData.add(student + " is missing" + (gradeLabelCounts.get(label) - studentGradeCount) + label);
+	}
+	
+	private String gradeString(String student, Map<String, List<Float>> studentData)
+	{
+		assert labelCount == drops.size() & labelCount == weights.size(); //change to popup later
 		float total = 0;
-		for (int i = 0; i < labels.size(); i++)
+		//gradesCount;
+		for (int i = 0; i < labelCount; i++) gradeLabelCounts.put(labels.get(i), 0);
+		for (int i = 0; i < labelCount; i++)
 		{
 			String label = labels.get(i);
-			total += getGrade(studentData.get(label), label, drops.get(i)) * weights.get(i);
+			List<Float> studentGrades = studentData.get(label);
+			
+			//int studentGradeCount = studentGrades.size();
+			//if(studentGradeCount >= gradeLabelCounts.get(label)) gradeLabelCounts.put(label, studentGradeCount);
+			//else warningData.add(student + " is missing" + (gradeLabelCounts.get(label) - studentGradeCount) + label);
+			
+			total += getGrade(studentGrades, label, drops.get(i)) * weights.get(i);
 		}
-		return (new StringBuilder()).append("x̅:").append(form.digits(total)) //x̅ means sample average; μ means population average
+		return (new StringBuilder()).append("\tx̅:").append(form.digits(total)) //x̅ means sample average; μ means population average
 									.append(" ∴").append(getLetter(total))
 									.toString();
 	}
@@ -113,9 +165,7 @@ public class ClassReport implements Initializable
 	
 	private char getLetter(float total)
 	{
-		List<Character> letters = (ArrayList<Character>)formats.get("letters");
-		List<Float> cutoffs = (ArrayList<Float>)formats.get("cutoffs");
-		assert letters.size() == cutoffs.size(); //change to popup later
+		assert letterCount == cutoffs.size(); //change to popup later
 		Map<Character, Float> limit = new TreeMap<>();
 		int mapIndex = 0;
 		for (char letter : letters)
@@ -133,8 +183,10 @@ public class ClassReport implements Initializable
 			}
 		}
 		assert letter != '0'; //replace with popup
+		classLetters.add(letter);
 		return letter;
 	}
+	
 	@Override public void initialize(URL location, ResourceBundle resources)
 	{
 		reportText.setEditable(false); //make text not editable
