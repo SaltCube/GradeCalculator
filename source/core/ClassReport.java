@@ -46,7 +46,7 @@ public class ClassReport implements Initializable
 		reportText.appendText("COMMENTS:\n");
 		reportText.appendText(data[0]);
 		reportText.appendText("————————————————\n");
-		//reportText.appendText(data[1]);
+		reportText.appendText(data[2]);
 		//System.out.println(data.length);
 		//for(String chunk : data) reportText.appendText(chunk + "\n");
 	}
@@ -55,8 +55,8 @@ public class ClassReport implements Initializable
 	{
 		String[] dataStrings = new String[5];
 		dataStrings[0] = form.listString((List)buffer.objects.get("comments")); //comment data
-		dataStrings[1] = form.listString(Arrays.asList(studentData())); //[WIP] student data
-		//dataStrings[2]
+		dataStrings[2] = form.listString(Arrays.asList(studentData())); //student data
+		//dataStrings[1] =
 		//dataStrings[3]
 		//dataStrings[4]
 		return dataStrings;
@@ -75,17 +75,65 @@ public class ClassReport implements Initializable
 	{
 		String student = studentArray[index];
 		Map studentData = students.get(student);
-		return student + ": " + gradeString(studentData);
+		StringBuilder gradeData = new StringBuilder();
+		for (Object entryObject : studentData.entrySet())
+		{
+			Map.Entry<String, List<Float>> entry = (Map.Entry<String, List<Float>>)entryObject;
+			gradeData.append(entry.getValue()).append(" ");
+		}
+		return student + ": " + gradeData.toString() + gradeString(studentData);
 	}
 	
 	private String gradeString(Map<String, List<Float>> studentData)
 	{
-		StringBuilder gradeBuilder = new StringBuilder();
-		for (Map.Entry<String, List> entry : formats.entrySet())
+		List<String> labels = new ArrayList<>(formats.get("labels"));
+		List<Integer> drops = new ArrayList<>(formats.get("drops"));
+		List<Float> weights = new ArrayList<>(formats.get("weights"));
+		assert labels.size() == drops.size() & labels.size() == weights.size(); //change to popup later
+		float total = 0;
+		for (int i = 0; i < labels.size(); i++)
 		{
-		
+			String label = labels.get(i);
+			total += getGrade(studentData.get(label), label, drops.get(i)) * weights.get(i);
 		}
-		return gradeBuilder.toString();
+		return (new StringBuilder()).append("x̅:").append(form.digits(total)) //x̅ means sample average; μ means population average
+									.append(" ∴").append(getLetter(total))
+									.toString();
+	}
+	
+	private float getGrade(List<Float> grades, String label, int dropCount)
+	{
+		grades.sort(Float::compare);
+		for (int i = 0; i < dropCount; i++) grades.remove(0);
+		float average = 0;
+		for (float grade : grades) average += grade;
+		average /= grades.size();
+		return average;
+	}
+	
+	private char getLetter(float total)
+	{
+		List<Character> letters = (ArrayList<Character>)formats.get("letters");
+		List<Float> cutoffs = (ArrayList<Float>)formats.get("cutoffs");
+		assert letters.size() == cutoffs.size(); //change to popup later
+		Map<Character, Float> limit = new TreeMap<>();
+		int mapIndex = 0;
+		for (char letter : letters)
+		{
+			limit.put(letter, cutoffs.get(mapIndex));
+			mapIndex++;
+		}
+		char letter = '0';
+		for (Map.Entry<Character, Float> entry : limit.entrySet())
+		{
+			if (total >= entry.getValue())
+			{
+				letter = entry.getKey();
+				break;
+			}
+		}
+		assert letter != '0'; //replace with popup
+		return letter;
 	}
 	@Override public void initialize(URL location, ResourceBundle resources)
 	{

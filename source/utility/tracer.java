@@ -17,7 +17,7 @@ public class Tracer
 	public Tracer(Exception e)
 	{
 		if (exception == null) throw new NullPointerException();
-		exception = e;
+		else exception = e;
 	}
 	
 	private static StackTraceElement[] mainTrace(StackTraceElement[] array)

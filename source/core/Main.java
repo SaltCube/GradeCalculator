@@ -224,7 +224,7 @@ public class Main extends Application
 			Alert alert = new Alert(Alert.AlertType.ERROR);
 			alert.setTitle("Error");
 			alert.setHeaderText("Couldn't open class report");
-			alert.setContentText(new Tracer(e).toString());
+			alert.setContentText((new Tracer(e)).toString());
 			alert.showAndWait();
 		}
 	}
