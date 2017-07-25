@@ -70,13 +70,22 @@ public class ClassReport implements Initializable
 		return studentData;
 	}
 	
+	private String[] studentArray = students.keySet().toArray(new String[studentCount]);
 	private String studentString(int index) //for example- Student A: [95 98 100 80 100 70 100], [66 77], [92] -> 84.8 = B
 	{
-		StringBuilder studentBuilder = new StringBuilder();
-		String[] studentArray = students.keySet().toArray(new String[studentCount]);
-		Map studentData = students.get(studentArray[index]);
+		String student = studentArray[index];
+		Map studentData = students.get(student);
+		return student + ": " + gradeString(studentData);
+	}
+	
+	private String gradeString(Map<String, List<Float>> studentData)
+	{
+		StringBuilder gradeBuilder = new StringBuilder();
+		for (Map.Entry<String, List> entry : formats.entrySet())
+		{
 		
-		return studentBuilder.toString();
+		}
+		return gradeBuilder.toString();
 	}
 	@Override public void initialize(URL location, ResourceBundle resources)
 	{
