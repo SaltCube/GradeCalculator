@@ -4,6 +4,8 @@ import javafx.scene.control.TextArea;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 public class form
 {
 	@NotNull public static List<String> textList(TextArea textArea)
@@ -14,6 +16,13 @@ public class form
 		return data;
 	}
 	
+	@NotNull public static String listString(List data)
+	{
+		if (data == null) throw new NullPointerException();
+		StringBuilder stringBuilder = new StringBuilder();
+		for (Object line : data) stringBuilder.append(line.toString()).append("\n");
+		return stringBuilder.toString();
+	}
 	@Deprecated public static List<String> getStudentsList(Map<String, LinkedHashMap<String, List<Float>>> students)
 	{
 		List<String> data = new ArrayList<>();
@@ -106,93 +115,88 @@ public class form
 		for (CharSequence readChars : textArea.getParagraphs())
 		{
 			String readLine = readChars.toString();
+			if (!readLine.isEmpty()) readLine = unComment(readLine);
 			if (!readLine.isEmpty())
 			{
-				if (readLine.startsWith("//")) ((ArrayList<String>)buffer.objects.get("comments")).add(readLine);
-				else if (readLine.contains("//"))
-					((ArrayList<String>)buffer.objects.get("comments")).add(readLine.split("//")[1]);
-				readLine = unComment(readLine);
-				if (!readLine.isEmpty())
+				if (!inStudents && !inFormats && readLine.toUpperCase().contains("FORMAT")) inFormats = true;
+				else if (!inStudents && inFormats && readLine.toUpperCase().contains("STUDENT"))
 				{
-					if (!inStudents && !inFormats && readLine.toUpperCase().contains("FORMAT")) inFormats = true;
-					else if (!inStudents && inFormats && readLine.toUpperCase().contains("STUDENT"))
+					inStudents = true;
+					inFormats = false;
+				}
+				else
+				{
+					if (inFormats)
 					{
-						inStudents = true;
-						inFormats = false;
+						readLine = readLine.replaceAll("[ *\\-]", "");
+						String[] line = readLine.toLowerCase().split(":");
+						String[] formatting = line[1].split(",");
+						int count = formatting.length;
+						switch (line[0])
+						{
+							case ("labels"):
+							{
+								formats.put(line[0], Arrays.asList(formatting));
+								break;
+							}
+							case ("drops"):
+							{
+								List<Integer> drops = new ArrayList<>(count);
+								for (String drop : formatting) drops.add(Integer.parseInt(drop));
+								formats.put(line[0], drops);
+								break;
+							}
+							case ("weights"):
+							{
+								List<Float> weights = new ArrayList<>(count);
+								for (String weight : formatting) weights.add(Float.parseFloat(weight));
+								formats.put(line[0], weights);
+								break;
+							}
+							case ("letters"):
+							{
+								List<Character> letters = new ArrayList<>(count);
+								for (String letter : formatting)
+								{
+									assert letter.length() == 1;
+									letters.add(letter.charAt(0));
+								}
+								formats.put(line[0], letters);
+								break;
+							}
+							case ("cutoffs"):
+							{
+								List<Float> cutoffs = new ArrayList<>(count);
+								for (String cutoff : formatting) cutoffs.add(Float.parseFloat(cutoff));
+								formats.put(line[0], cutoffs);
+								break;
+							}
+							default:
+							{
+								List<String> formatList = Arrays.asList(formatting);
+								buffer.objects.put("unknownFormats", readLine);
+								formats.put("?" + line[0], formatList);
+							}
+						}
 					}
-					else
+					else if (inStudents)
 					{
-						if (inFormats)
+						String[] line = readLine.split(":");
+						List labels = formats.get("labels");
+						assert labels.size() > 0;
+						LinkedHashMap<String, List<Float>> studentGrades = new LinkedHashMap<>(labels.size());
+						for (int labelIndex = 0; labelIndex < labels.size(); labelIndex++)
 						{
-							String[] line = readLine.toLowerCase().split(":");
-							String[] formatting = line[1].split(",");
-							int count = formatting.length;
-							switch (line[0])
+							String[] currentGrades = line[1].replaceAll("[ -]", "").split("\\*");
+							List<Float> gradeData = new ArrayList<>();
+							for (String score : currentGrades[labelIndex].split(","))
 							{
-								case ("labels"):
-								{
-									formats.put(line[0], Arrays.asList(formatting));
-									break;
-								}
-								case ("drops"):
-								{
-									List<Integer> drops = new ArrayList<>(count);
-									for (String drop : formatting) drops.add(Integer.parseInt(drop));
-									formats.put(line[0], drops);
-									break;
-								}
-								case ("weights"):
-								{
-									List<Float> weights = new ArrayList<>(count);
-									for (String weight : formatting) weights.add(Float.parseFloat(weight));
-									formats.put(line[0], weights);
-									break;
-								}
-								case ("letters"):
-								{
-									List<Character> letters = new ArrayList<>(count);
-									for (String letter : formatting)
-									{
-										assert letter.length() == 1;
-										letters.add(letter.charAt(0));
-									}
-									formats.put(line[0], letters);
-									break;
-								}
-								case ("cutoffs"):
-								{
-									List<Float> cutoffs = new ArrayList<>(count);
-									for (String cutoff : formatting) cutoffs.add(Float.parseFloat(cutoff));
-									formats.put(line[0], cutoffs);
-									break;
-								}
-								default:
-								{
-									List<String> formatList = Arrays.asList(formatting);
-									buffer.objects.put("unknownFormats", readLine);
-									formats.put("?" + line[0], formatList);
-								}
+								if (score.equals("*")) break;
+								if (!score.isEmpty()) gradeData.add(Float.parseFloat(score));
 							}
+							studentGrades.put((String)labels.get(labelIndex), gradeData);
 						}
-						if (inStudents)
-						{
-							String[] line = readLine.split(":");
-							List labels = formats.get("labels");
-							assert labels.size() > 0;
-							LinkedHashMap<String, List<Float>> studentGrades = new LinkedHashMap<>(labels.size());
-							for (int labelIndex = 0; labelIndex < labels.size(); labelIndex++)
-							{
-								String[] currentGrades = line[1].replaceAll("[ -]", "").split("\\*");
-								List<Float> gradeData = new ArrayList<>();
-								for (String score : currentGrades[labelIndex].split(","))
-								{
-									if (score.equals("*")) break;
-									if (!score.isEmpty()) gradeData.add(Float.parseFloat(score));
-								}
-								studentGrades.put((String)labels.get(labelIndex), gradeData);
-							}
-							students.put(line[0], studentGrades);
-						}
+						students.put(line[0], studentGrades);
 					}
 				}
 			}
@@ -223,16 +227,40 @@ public class form
 	@NotNull public static String unComment(String line) //de-comments lines and removes any non-parsable special characters
 	{
 		if (line == null) throw new NullPointerException();
-		return line.split("//")[0].replaceAll("[^A-Za-z0-9:,.* \\-]|/\\\\*.*/\\\\*", "");
+		if (line.startsWith("//"))
+		{
+			((ArrayList<String>)buffer.objects.get("comments")).add(line);
+			return "";
+		}
+		else
+		{
+			if (!line.contains("/")) return line;
+			else
+			{
+				if (line.substring(line.indexOf("/"), line.lastIndexOf("/")).length() > 2)
+				{
+					List<String> blocks = new ArrayList();
+					Matcher matcher = Pattern.compile("/(.+?)/").matcher(line);
+					while (matcher.find()) blocks.add(matcher.group(1));
+					if (blocks.size() == 1)
+						((ArrayList<String>)buffer.objects.get("comments")).add("/" + blocks.get(0) + "/");
+					else for (String block : blocks)
+						((ArrayList<String>)buffer.objects.get("comments")).add("/" + block + "/");
+				}
+				if (line.contains("//"))
+				{
+					((ArrayList<String>)buffer.objects.get("comments")).add("//" + line.split("//")[1]);
+					line = line.split("//")[0];
+				}
+				
+				return line.replaceAll("/(.+?)/|[^A-Za-z0-9:,.* \\-]", "");
+			}
+		}
 	}
 	
-	@NotNull public static List<String> getComments(String line) //returns only the comment(s) in the line as a list
+	@NotNull public static List<String> getComments(String line) //NEEDS FIX; returns comments in a list for every string(line) given
 	{
-		if (line == null) throw new NullPointerException();
-		List<String> comments = new ArrayList<>();
-		if (line.contains("//")) comments.add(line.split("//")[1]);
-		if (line.matches("/\\\\*.*/\\\\*")) comments.add(line.replaceAll("^/\\\\*.*/\\\\*", ""));
-		return comments;
+		return null; //placeholder so program can compile for testing
 	}
 	
 	public static String digits(float d)

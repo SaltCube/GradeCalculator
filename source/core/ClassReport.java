@@ -11,8 +11,7 @@ import utility.form;
 
 import java.io.File;
 import java.net.URL;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class ClassReport implements Initializable
 {
@@ -36,17 +35,65 @@ public class ClassReport implements Initializable
 			reportText.appendText(line + System.getProperty("line.separator"));
 	}
 	
+	private Map[] data = form.parseData((TextArea)buffer.objects.get("TextArea"));
+	private Map<String, List> formats = (HashMap<String, List>)data[0];
+	private Map<String, LinkedHashMap<String, List<Float>>> students = (LinkedHashMap<String, LinkedHashMap<String, List<Float>>>)data[1];
+	private int studentCount = students.keySet().size();
+
 	private void showReport()
 	{
+		String[] data = reportData();
+		reportText.appendText("COMMENTS:\n");
+		reportText.appendText(data[0]);
+		reportText.appendText("————————————————\n");
+		//reportText.appendText(data[1]);
+		//System.out.println(data.length);
+		//for(String chunk : data) reportText.appendText(chunk + "\n");
+	}
 	
+	private String[] reportData()
+	{
+		String[] dataStrings = new String[5];
+		dataStrings[0] = form.listString((List)buffer.objects.get("comments")); //comment data
+		dataStrings[1] = form.listString(Arrays.asList(studentData())); //[WIP] student data
+		//dataStrings[2]
+		//dataStrings[3]
+		//dataStrings[4]
+		return dataStrings;
+	}
+	
+	private String[] studentData()
+	{
+		String[] studentData = new String[studentCount]; //array for storing each student's data in a String line
+		for (int i = 0; i < studentCount; i++)
+			studentData[i] = studentString(i); //iterate through the students and assign them their place in the array
+		return studentData;
+	}
+	
+	private String[] studentArray = students.keySet().toArray(new String[studentCount]);
+	private String studentString(int index) //for example- Student A: [95 98 100 80 100 70 100], [66 77], [92] -> 84.8 = B
+	{
+		String student = studentArray[index];
+		Map studentData = students.get(student);
+		return student + ": " + gradeString(studentData);
+	}
+	
+	private String gradeString(Map<String, List<Float>> studentData)
+	{
+		StringBuilder gradeBuilder = new StringBuilder();
+		for (Map.Entry<String, List> entry : formats.entrySet())
+		{
+		
+		}
+		return gradeBuilder.toString();
 	}
 	@Override public void initialize(URL location, ResourceBundle resources)
 	{
 		reportText.setEditable(false); //make text not editable
 		showReport();
-		reportText.appendText("\n\n");
-		reportText.appendText("————————————————");
-		reportText.appendText("\n\n");
-		showStudentData();
+		//reportText.appendText("\n\n");
+		//reportText.appendText("————————————————");
+		//reportText.appendText("\n\n");
+		//showStudentData();
 	}
 }
