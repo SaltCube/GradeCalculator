@@ -112,6 +112,7 @@ public class form
 		Map<String, LinkedHashMap<String, List<Float>>> students = new LinkedHashMap<>();
 		buffer.objects.put("comments", new ArrayList<String>());
 		boolean inFormats = false, inStudents = false;
+		int lineIndex = 1;
 		for (CharSequence readChars : textArea.getParagraphs())
 		{
 			String readLine = readChars.toString();
@@ -159,7 +160,7 @@ public class form
 								for (String letter : formatting)
 								{
 									assert letter.length() == 1;
-									letters.add(letter.charAt(0));
+									letters.add(letter.toUpperCase().charAt(0));
 								}
 								formats.put(line[0], letters);
 								break;
@@ -173,9 +174,9 @@ public class form
 							}
 							default:
 							{
-								List<String> formatList = Arrays.asList(formatting);
 								buffer.objects.put("unknownFormats", readLine);
-								formats.put("?" + line[0], formatList);
+								formats.put("?" + line[0], Arrays.asList(formatting));
+								//add popup warning user of unknown format line at lineIndex
 							}
 						}
 					}
@@ -196,10 +197,12 @@ public class form
 							}
 							studentGrades.put((String)labels.get(labelIndex), gradeData);
 						}
+						assert studentGrades.size() == labels.size(); //replace with popup later
 						students.put(line[0], studentGrades);
 					}
 				}
 			}
+			lineIndex++;
 		}
 		return new Map[]{formats, students};
 	}

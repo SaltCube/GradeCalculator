@@ -1,5 +1,12 @@
 package utility;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -14,10 +21,35 @@ public class Tracer
 	private Throwable cause = null;
 	private Throwable[] suppressed = null;
 	
-	public Tracer(Exception e)
+	public Tracer(Exception exception)
 	{
 		if (exception == null) throw new NullPointerException();
-		exception = e;
+		this.exception = exception;
+	}
+	
+	public void showAlert()
+	{
+		try
+		{
+			Stage alert = new Stage();
+			alert.setTitle("Error"); //sets title
+			alert.getIcons().add(new Image("utility/alert.png")); //sets icon
+			alert.setScene(new Scene(FXMLLoader.load(getClass().getResource("ExceptionAlert_GUI.fxml")))); //sets GUI file
+			//alert.initModality(Modality.APPLICATION_MODAL);
+			alert.show(); //shows window
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+			System.err.println("Could not open alert window to show exception");
+			System.out.println(color.red + "IO EXCEPTION THROWN WHILE TRYING TO HANDLE AN EXCEPTION" + color.reset);
+			System.out.println(color.red + e.toString() + color.reset);
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setTitle("Fatal Error");
+			alert.setHeaderText("Could not open exception handler");
+			alert.setContentText("IO EXCEPTION THROWN WHILE TRYING TO HANDLE AN EXCEPTION");
+			alert.showAndWait();
+		}
 	}
 	
 	private static StackTraceElement[] mainTrace(StackTraceElement[] array)
