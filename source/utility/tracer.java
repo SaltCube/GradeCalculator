@@ -27,6 +27,22 @@ public class Tracer
 		this.exception = exception;
 	}
 	
+	private static StackTraceElement[] mainTrace(StackTraceElement[] array)
+	{
+		List<StackTraceElement> elements = new ArrayList<>();
+		for (StackTraceElement line : array)
+		{
+			if (line.toString().contains("core")) elements.add(line);//just append the immediately relevant
+			if (line.toString().contains("utility")) elements.add(line);
+		}
+		return elements.toArray(new StackTraceElement[elements.size()]);
+	}
+	
+	private static String stringedElements(StackTraceElement[] array)
+	{
+		return form.listString(Arrays.asList(array));
+	}
+	
 	public void showAlert()
 	{
 		try
@@ -50,22 +66,6 @@ public class Tracer
 			alert.setContentText("IO EXCEPTION THROWN WHILE TRYING TO HANDLE AN EXCEPTION");
 			alert.showAndWait();
 		}
-	}
-	
-	private static StackTraceElement[] mainTrace(StackTraceElement[] array)
-	{
-		List<StackTraceElement> elements = new ArrayList<>();
-		for (StackTraceElement line : array)
-		{
-			if (line.toString().contains("core")) elements.add(line);//just append the immediately relevant
-			if (line.toString().contains("utility")) elements.add(line);
-		}
-		return elements.toArray(new StackTraceElement[elements.size()]);
-	}
-	
-	private static String stringedElements(StackTraceElement[] array)
-	{
-		return form.listString(Arrays.asList(array));
 	}
 	
 	public Exception getException()

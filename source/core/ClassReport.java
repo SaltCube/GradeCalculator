@@ -19,7 +19,6 @@ public class ClassReport implements Initializable
 	@FXML TextArea reportText;
 	@FXML Button reportSaveAs;
 	@FXML Button reportPrint;
-	public List comments = (List<String>)buffer.objects.get("comments");
 	private TextArea parentText = (TextArea)buffer.objects.get("parentText");
 	private Map[] data = form.parseData(parentText);
 	private Map<String, List> formats = (HashMap<String, List>)data[0];
@@ -36,6 +35,7 @@ public class ClassReport implements Initializable
 	private List<Character> classLetters = new ArrayList<>(letterCount);
 	private Map<String, Integer> gradeTypeCounts = new LinkedHashMap<>(labelCount);
 	private String[] studentArray = students.keySet().toArray(new String[studentCount]);
+	private List comments = (List<String>)buffer.objects.get("comments");
 	
 	public TextArea getParentText()
 	{

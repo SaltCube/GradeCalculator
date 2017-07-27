@@ -23,18 +23,8 @@ import java.util.List;
 public class Main extends Application// implements Initializable
 {
 	Stage primaryStage;
-	
-	@Override public void start(Stage primaryStage) throws Exception
-	{
-		primaryStage.setTitle("TextFX"); //set title of the main window
-		primaryStage.getIcons().add(new Image("core/icon.png")); //sets the icon for this stage
-		primaryStage.setScene(new Scene(FXMLLoader.load(getClass().getResource("Main_GUI.fxml")))); //sets the GUI file for this stage
-		this.primaryStage = primaryStage;
-		primaryStage.show(); //shows the window
-	}
-	//@Override public void initialize(URL location, ResourceBundle resources){}
-	
 	@FXML Button buttonAbout;
+	//@Override public void initialize(URL location, ResourceBundle resources){}
 	@FXML MenuItem menuStudentReport;
 	@FXML TextArea userText;
 	@FXML MenuItem fileNew;
@@ -51,6 +41,15 @@ public class Main extends Application// implements Initializable
 	@FXML MenuItem editCopy;
 	@FXML MenuItem editCut;
 	private String path = null;
+	
+	@Override public void start(Stage primaryStage) throws Exception
+	{
+		primaryStage.setTitle("TextFX"); //set title of the main window
+		primaryStage.getIcons().add(new Image("core/icon.png")); //sets the icon for this stage
+		primaryStage.setScene(new Scene(FXMLLoader.load(getClass().getResource("Main_GUI.fxml")))); //sets the GUI file for this stage
+		this.primaryStage = primaryStage;
+		primaryStage.show(); //shows the window
+	}
 	
 	@FXML public void onFileNew()
 	{
@@ -288,6 +287,7 @@ public class Main extends Application// implements Initializable
 	{
 		about();
 	}
+	
 	private void about() //open about window logic
 	{
 		try

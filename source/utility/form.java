@@ -23,6 +23,7 @@ public class form
 		for (Object line : data) stringBuilder.append(line.toString()).append("\n");
 		return stringBuilder.toString();
 	}
+	
 	@Deprecated public static List<String> getStudentsList(Map<String, LinkedHashMap<String, List<Float>>> students)
 	{
 		List<String> data = new ArrayList<>();

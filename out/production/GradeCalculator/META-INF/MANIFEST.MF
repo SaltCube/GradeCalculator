@@ -1,3 +1,4 @@
 Manifest-Version: 1.0
 Testing-Class: core.Testing
+Main-Class: core.Main
 
