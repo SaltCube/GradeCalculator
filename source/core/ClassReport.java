@@ -59,8 +59,7 @@ public class ClassReport implements Initializable
 	}
 	
 	private void showReport()
-	{
-		String[] data = reportData();
+	{		String[] data = reportData();
 		reportText.appendText("COMMENTS———————————————————————\n");
 		reportText.appendText(data[0]);
 		reportText.appendText("\nNOTES——————————————————————————\n");
