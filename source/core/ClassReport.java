@@ -2,6 +2,7 @@ package core;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
@@ -18,6 +19,28 @@ public class ClassReport implements Initializable
 	@FXML TextArea reportText;
 	@FXML Button reportSaveAs;
 	@FXML Button reportPrint;
+	public List comments = (List<String>)buffer.objects.get("comments");
+	private TextArea parentText = (TextArea)buffer.objects.get("parentText");
+	private Map[] data = form.parseData(parentText);
+	private Map<String, List> formats = (HashMap<String, List>)data[0];
+	private List<String> labels = new ArrayList<>(formats.get("labels"));
+	private int labelCount = labels.size();
+	private List<Integer> drops = new ArrayList<>(formats.get("drops"));
+	private List<Float> weights = new ArrayList<>(formats.get("weights"));
+	private List<Character> letters = (ArrayList<Character>)formats.get("letters");
+	private int letterCount = letters.size();
+	private List<Float> cutoffs = (ArrayList<Float>)formats.get("cutoffs");
+	private Map<String, LinkedHashMap<String, List<Float>>> students = (LinkedHashMap<String, LinkedHashMap<String, List<Float>>>)data[1];
+	private int studentCount = students.keySet().size();
+	private List<String> warningData = new ArrayList<>();
+	private List<Character> classLetters = new ArrayList<>(letterCount);
+	private Map<String, Integer> gradeTypeCounts = new LinkedHashMap<>(labelCount);
+	private String[] studentArray = students.keySet().toArray(new String[studentCount]);
+	
+	public TextArea getParentText()
+	{
+		return parentText;
+	}
 	
 	@FXML void onReportSaveAs()
 	{
@@ -31,25 +54,10 @@ public class ClassReport implements Initializable
 	
 	private void showStudentData()
 	{
-		for (Object line : (List<String>)form.listData(form.parseData((TextArea)buffer.objects.get("TextArea")))[1])
+		for (String line : (List<String>)form.listData(form.parseData(parentText))[1])
 			reportText.appendText(line + System.getProperty("line.separator"));
 	}
 	
-	private Map[] data = form.parseData((TextArea)buffer.objects.get("TextArea"));
-	private Map<String, List> formats = (HashMap<String, List>)data[0];
-	private Map<String, LinkedHashMap<String, List<Float>>> students = (LinkedHashMap<String, LinkedHashMap<String, List<Float>>>)data[1];
-	private int studentCount = students.keySet().size();
-	private List<String> labels = new ArrayList<>(formats.get("labels"));
-	private int labelCount = labels.size();
-	private List<Integer> drops = new ArrayList<>(formats.get("drops"));
-	private List<Float> weights = new ArrayList<>(formats.get("weights"));
-	private List<Character> letters = (ArrayList<Character>)formats.get("letters");
-	private int letterCount = letters.size();
-	private List<Float> cutoffs = (ArrayList<Float>)formats.get("cutoffs");
-	private Map<String, Integer> gradeLabelCounts = new LinkedHashMap<>();
-	private List<String> warningData = new ArrayList<>();
-	private List<Character> classLetters = new ArrayList<>(letterCount);
-
 	private void showReport()
 	{
 		String[] data = reportData();
@@ -59,21 +67,10 @@ public class ClassReport implements Initializable
 		reportText.appendText(data[1]);
 		reportText.appendText("\nGRADES—————————————————————————\n");
 		reportText.appendText(data[2]);
-		reportText.appendText("\nLETTER-COUNTS——————————————————\n");
+		reportText.appendText("\nCLASS-STATS————————————————————\n");
 		reportText.appendText(data[3]);
 		reportText.appendText("\nWARNINGS———————————————————————\n");
-		//reportText.appendText(data[4]);
-	}
-	
-	private String[] reportData()
-	{
-		String[] dataStrings = new String[5];
-		dataStrings[0] = form.listString((List)buffer.objects.get("comments")); //comment data
-		dataStrings[2] = form.listString(Arrays.asList(studentData())); //student data
-		dataStrings[1] = form.listString(Arrays.asList(noteData())); //note data
-		dataStrings[3] = form.listString(letterData()); //letter count data
-		dataStrings[4] = form.listString(warningData); //students' warning data
-		return dataStrings;
+		reportText.appendText(data[4]);
 	}
 	
 	private List<String> letterData()
@@ -101,6 +98,17 @@ public class ClassReport implements Initializable
 		return notes;
 	}
 	
+	private String[] reportData()
+	{
+		String[] dataStrings = new String[5];
+		dataStrings[0] = form.listString(comments); //comment data
+		dataStrings[2] = form.listString(Arrays.asList(studentData())); //student data
+		dataStrings[1] = form.listString(Arrays.asList(noteData())); //note data
+		dataStrings[3] = form.listString(letterData()); //letter count data
+		dataStrings[4] = form.listString(warningData); //students' warning data
+		return dataStrings;
+	}
+	
 	private String[] studentData()
 	{
 		String[] studentData = new String[studentCount]; //array for storing each student's data in a String line
@@ -108,8 +116,6 @@ public class ClassReport implements Initializable
 			studentData[i] = studentString(i); //iterate through the students and assign them their place in the array
 		return studentData;
 	}
-	
-	private String[] studentArray = students.keySet().toArray(new String[studentCount]);
 	
 	private String studentString(int index) //for example- Student A: [95 98 100 80 100 70 100], [66 77], [92] -> 84.8 = B
 	{
@@ -119,47 +125,66 @@ public class ClassReport implements Initializable
 		for (Object entryObject : studentData.entrySet())
 		{
 			Map.Entry<String, List<Float>> entry = (Map.Entry<String, List<Float>>)entryObject;
-			gradeData.append(entry.getValue()).append(" ");
+			String gradeType = entry.getKey();
+			int studentCount = entry.getValue().size();
+			Integer currentCount = gradeTypeCounts.get(gradeType);
+			if (currentCount == null) gradeTypeCounts.put(gradeType, studentCount);
+			else if (currentCount < studentCount) gradeTypeCounts.put(gradeType, studentCount);
+		}
+		/*int dropIndex = 0;
+		for (Map.Entry<String, Integer> entry : gradeTypeCounts.entrySet())
+		{
+			String gradeType = entry.getKey();
+			int gradeCount = entry.getValue();
+			gradeTypeCounts.replace(gradeType, gradeCount, gradeCount - drops.get(dropIndex));
+			dropIndex++;
+		}*/
+		for (Object entryObject : studentData.entrySet())
+		{
+			Map.Entry<String, List<Float>> entry = (Map.Entry<String, List<Float>>)entryObject;
+			gradeData.append(entry.getValue().toString()).append(" "); //fix later combine with gradeString()
 		}
 		return student + ": " + gradeData.toString() + gradeString(student, studentData);
 	}
 	
-	private void setGradeLabelCounts()
-	{
-		//int studentGradeCount = studentGrades.size();
-		//if(studentGradeCount >= gradeLabelCounts.get(label)) gradeLabelCounts.put(label, studentGradeCount);
-		//else warningData.add(student + " is missing" + (gradeLabelCounts.get(label) - studentGradeCount) + label);
-	}
-	
 	private String gradeString(String student, Map<String, List<Float>> studentData)
 	{
-		assert labelCount == drops.size() & labelCount == weights.size(); //change to popup later
+		assert labelCount == drops.size() && labelCount == weights.size(); //change to popup later
 		float total = 0;
-		//gradesCount;
-		for (int i = 0; i < labelCount; i++) gradeLabelCounts.put(labels.get(i), 0);
 		for (int i = 0; i < labelCount; i++)
 		{
-			String label = labels.get(i);
-			List<Float> studentGrades = studentData.get(label);
-			
-			//int studentGradeCount = studentGrades.size();
-			//if(studentGradeCount >= gradeLabelCounts.get(label)) gradeLabelCounts.put(label, studentGradeCount);
-			//else warningData.add(student + " is missing" + (gradeLabelCounts.get(label) - studentGradeCount) + label);
-			
-			total += getGrade(studentGrades, label, drops.get(i)) * weights.get(i);
+			String gradeType = labels.get(i);
+			List<Float> studentGrades = studentData.get(gradeType);
+			total += getGrade(student, studentGrades, gradeType, drops.get(i)) * weights.get(i);
 		}
 		return (new StringBuilder()).append("\tx̅:").append(form.digits(total)) //x̅ means sample average; μ means population average
 									.append(" ∴").append(getLetter(total))
 									.toString();
 	}
 	
-	private float getGrade(List<Float> grades, String label, int dropCount)
+	private float getGrade(String student, List<Float> grades, String gradeType, int dropCount)
 	{
+		int requiredCount = gradeTypeCounts.get(gradeType);
+		int difference = requiredCount - grades.size();
+		if (difference > 0)
+		{
+			warningData.add(student + " is missing " + difference + " "
+							+ ((difference > 1) ? ((gradeType.endsWith("s")) ? gradeType : gradeType + "s") : ((gradeType.endsWith("s")) ? gradeType.substring(0, gradeType.length() - 1) : gradeType)));
+		}
+		else if (difference < 0)
+		{
+			System.err.println("miscalculated required grade counts");
+			Alert alert = new Alert(Alert.AlertType.INFORMATION);
+			alert.setTitle("Incorrect calculation");
+			alert.setHeaderText("Calculated " + student + "'s grades incorrectly");
+			alert.setContentText(student + "'s grades show " + (-1 * difference) + " more than calculated maximum number of grades for " + gradeType);
+			alert.showAndWait();
+		}
 		grades.sort(Float::compare);
 		for (int i = 0; i < dropCount; i++) grades.remove(0);
 		float average = 0;
 		for (float grade : grades) average += grade;
-		average /= grades.size();
+		average /= (requiredCount - dropCount);
 		return average;
 	}
 	

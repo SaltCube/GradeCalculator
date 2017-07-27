@@ -20,15 +20,19 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Main extends Application
+public class Main extends Application// implements Initializable
 {
-	@Override public void start(Stage mainStage) throws Exception
+	Stage primaryStage;
+	
+	@Override public void start(Stage primaryStage) throws Exception
 	{
-		mainStage.setTitle("TextFX"); //set title of the main window
-		mainStage.getIcons().add(new Image("core/icon.png")); //sets the icon for this stage
-		mainStage.setScene(new Scene(FXMLLoader.load(getClass().getResource("Main_GUI.fxml")))); //sets the GUI file for this stage
-		mainStage.show(); //shows the window
+		primaryStage.setTitle("TextFX"); //set title of the main window
+		primaryStage.getIcons().add(new Image("core/icon.png")); //sets the icon for this stage
+		primaryStage.setScene(new Scene(FXMLLoader.load(getClass().getResource("Main_GUI.fxml")))); //sets the GUI file for this stage
+		this.primaryStage = primaryStage;
+		primaryStage.show(); //shows the window
 	}
+	//@Override public void initialize(URL location, ResourceBundle resources){}
 	
 	@FXML Button buttonAbout;
 	@FXML MenuItem menuStudentReport;
@@ -74,7 +78,7 @@ public class Main extends Application
 		IO.save(file, form.textList(userText));
 	} //FXML call to save as method
 	
-	@FXML public void onFileOpen()
+	@FXML public void onFileOpen() //test exception handling here
 	{
 		try
 		{
@@ -82,12 +86,8 @@ public class Main extends Application
 		}
 		catch (Exception e)
 		{
-			Alert alert = new Alert(Alert.AlertType.ERROR);
-			alert.setTitle("Error");
-			alert.setHeaderText("null pointer error");
 			Tracer tracer = new Tracer(e);
-			alert.setContentText(tracer.toString());
-			alert.showAndWait();
+			tracer.showAlert();
 		}
 	} //FXML call to open file
 	
@@ -119,7 +119,7 @@ public class Main extends Application
 		{
 			e.printStackTrace();
 			System.err.println("Error reading the file");
-			Alert alert = new Alert(Alert.AlertType.ERROR, "Error reading the file.");
+			Alert alert = new Alert(Alert.AlertType.ERROR);
 			alert.setTitle("Error");
 			alert.setHeaderText("Couldn't read the file specified");
 			alert.setContentText(new Tracer(e).toString());
@@ -129,6 +129,16 @@ public class Main extends Application
 		{
 			e.printStackTrace();
 			System.err.println("Null pointer error");
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			System.err.println("Error opening file on menu open");
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setTitle("Error");
+			alert.setHeaderText("Error thrown while attempting to show file chooser to open a file");
+			alert.setContentText(new Tracer(e).toString());
+			alert.showAndWait();
 		}
 	}
 	
@@ -153,7 +163,7 @@ public class Main extends Application
 			settings.setAlwaysOnTop(true); //sets settings window to always show on top of desktop (until closed)
 			settings.show(); //shows the settings window
 		}
-		catch (IOException e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 			System.err.println("Something went wrong opening settings");
@@ -192,7 +202,7 @@ public class Main extends Application
 	
 	@FXML public void onMenuClassReport()
 	{
-		buffer.objects.put("TextArea", userText);
+		buffer.objects.put("parentText", userText);
 		classReport();
 	} //FXML call open report window
 	
@@ -202,6 +212,7 @@ public class Main extends Application
 		{
 			if (userText.getParagraphs().size() < 8)
 			{
+				buffer.objects.put("parentText", userText);
 				Alert alert = new Alert(Alert.AlertType.INFORMATION);
 				alert.setTitle("Report failed");
 				alert.setHeaderText("No data to parse");
@@ -217,7 +228,7 @@ public class Main extends Application
 				report.show(); //shows window
 			}
 		}
-		catch (IOException e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 			System.err.println("Something went wrong opening class report");
