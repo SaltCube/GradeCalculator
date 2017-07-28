@@ -66,6 +66,7 @@ public class Main extends Application// implements Initializable
 	{
 		if (path == null)
 		{
+			System.err.println("Null pointer error in save method");
 			Alert alert = new Alert(Alert.AlertType.WARNING);
 			alert.setTitle("Save failed");
 			alert.setHeaderText("There is nothing to save");
@@ -79,8 +80,12 @@ public class Main extends Application// implements Initializable
 	{
 		
 		File file = new FileChooser().showSaveDialog(userText.getScene().getWindow());
-		path = file.getPath();
-		IO.save(file, form.textList(userText));
+		if (file != null)
+		{
+			path = file.getPath();
+			IO.save(file, form.textList(userText));
+		}
+		else System.err.println("Null pointer error in save as method");
 	} //FXML call to save as method
 	
 	@FXML public void onFileOpen() //test exception handling here
@@ -124,7 +129,7 @@ public class Main extends Application// implements Initializable
 		}
 		catch (NullPointerException e) //when cancel is pressed
 		{
-			System.err.println("Null pointer error in open file method");
+			System.err.println("Null pointer error in open method");
 		}
 		catch (Exception e)
 		{
