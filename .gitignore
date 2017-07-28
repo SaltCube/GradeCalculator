@@ -11,8 +11,6 @@
 # Intellij Files #
 .idea/
 *.iml
-out/
-!out/artifacts/GradeCalculator_jar/GradeCalculator.jar
 source/META-INF/
 test/
 
