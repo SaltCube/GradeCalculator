@@ -1,8 +1,6 @@
 package utility;
 
 import core.Main;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
 import java.io.BufferedWriter;
@@ -21,6 +19,7 @@ public class IO
 		catch (Exception e)
 		{
 			e.printStackTrace();
+			new Tracer(e).showAlert();
 			System.err.println("Error opening new window");
 		}
 	}
@@ -35,14 +34,11 @@ public class IO
 		catch (IOException e)
 		{
 			e.printStackTrace();
-			System.err.println("Error writing to the file");
-			Alert alert = new Alert(Alert.AlertType.ERROR, "Error writing to the file.", ButtonType.OK);
-			alert.showAndWait();
+			new Tracer(e).showAlert();
 		}
 		catch (NullPointerException e)
 		{
-			e.printStackTrace();
-			System.err.println("Null pointer error");
+			System.err.println("Null pointer error in save method");
 		}
 	}
 	

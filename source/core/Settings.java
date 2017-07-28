@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import utility.Tracer;
 
 import java.io.*;
 import java.net.URL;
@@ -36,7 +37,7 @@ public class Settings implements Initializable //Settings is disabled for now
 		catch (FileNotFoundException e)
 		{
 			e.printStackTrace();
-			System.err.println("settings file not found");
+			new Tracer(e).showAlert();
 		}
 	}
 	
@@ -48,8 +49,8 @@ public class Settings implements Initializable //Settings is disabled for now
 		}
 		catch (IOException e)
 		{
-			System.err.println("Error saving settings changes");
 			e.printStackTrace();
+			new Tracer(e).showAlert();
 		}
 	}
 	

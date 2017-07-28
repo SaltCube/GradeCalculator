@@ -4,6 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -48,10 +49,12 @@ public class Tracer
 		try
 		{
 			Stage alert = new Stage();
-			alert.setTitle("Error"); //sets title
+			buffer.objects.put("Tracer", this);
+			alert.setTitle("Error - " + getType()); //sets title
 			alert.getIcons().add(new Image("utility/alert.png")); //sets icon
 			alert.setScene(new Scene(FXMLLoader.load(getClass().getResource("ExceptionAlert_GUI.fxml")))); //sets GUI file
-			//alert.initModality(Modality.APPLICATION_MODAL);
+			alert.setResizable(false);
+			alert.initModality(Modality.APPLICATION_MODAL);
 			alert.show(); //shows window
 		}
 		catch (IOException e)
@@ -82,7 +85,8 @@ public class Tracer
 	{
 		if (type == null)
 		{
-			type = exception.toString();
+			String[] temp = exception.toString().split("\\.");
+			type = temp[temp.length - 1];
 			return type;
 		}
 		else return type;

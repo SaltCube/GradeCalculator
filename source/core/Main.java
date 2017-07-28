@@ -17,8 +17,6 @@ import utility.buffer;
 import utility.form;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Main extends Application// implements Initializable
 {
@@ -44,11 +42,19 @@ public class Main extends Application// implements Initializable
 	
 	@Override public void start(Stage primaryStage) throws Exception
 	{
-		primaryStage.setTitle("TextFX"); //set title of the main window
-		primaryStage.getIcons().add(new Image("core/icon.png")); //sets the icon for this stage
-		primaryStage.setScene(new Scene(FXMLLoader.load(getClass().getResource("Main_GUI.fxml")))); //sets the GUI file for this stage
-		this.primaryStage = primaryStage;
-		primaryStage.show(); //shows the window
+		try
+		{
+			primaryStage.setTitle("GradeCalculatorFX"); //set title of the main window
+			primaryStage.getIcons().add(new Image("core/icon.png")); //sets the icon for this stage
+			primaryStage.setScene(new Scene(FXMLLoader.load(getClass().getResource("Main_GUI.fxml")))); //sets the GUI file for this stage
+			this.primaryStage = primaryStage;
+			primaryStage.show(); //shows the window
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			System.err.println("Something went wrong in the start");
+		}
 	}
 	
 	@FXML public void onFileNew()
@@ -79,22 +85,14 @@ public class Main extends Application// implements Initializable
 	
 	@FXML public void onFileOpen() //test exception handling here
 	{
-		try
-		{
-			open(new FileChooser().showOpenDialog(userText.getScene().getWindow()));
-		}
-		catch (Exception e)
-		{
-			Tracer tracer = new Tracer(e);
-			tracer.showAlert();
-		}
+		open(new FileChooser().showOpenDialog(userText.getScene().getWindow()));
 	} //FXML call to open file
 	
 	private void open(File file) //open file method logic
 	{
-		path = file.getPath(); //sets the file path to the opened file
 		try (BufferedReader reader = new BufferedReader(new FileReader(file)))
 		{
+			path = file.getPath(); //sets the file path to the opened file
 			String line; //string for storing current line read
 			userText.setText(null); //wipes the current text in the textarea
 			while ((line = reader.readLine()) != null)
@@ -126,18 +124,12 @@ public class Main extends Application// implements Initializable
 		}
 		catch (NullPointerException e) //when cancel is pressed
 		{
-			e.printStackTrace();
-			System.err.println("Null pointer error");
+			System.err.println("Null pointer error in open file method");
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			System.err.println("Error opening file on menu open");
-			Alert alert = new Alert(Alert.AlertType.ERROR);
-			alert.setTitle("Error");
-			alert.setHeaderText("Error thrown while attempting to show file chooser to open a file");
-			alert.setContentText(new Tracer(e).toString());
-			alert.showAndWait();
+			new Tracer(e).showAlert();
 		}
 	}
 	
@@ -165,12 +157,7 @@ public class Main extends Application// implements Initializable
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			System.err.println("Something went wrong opening settings");
-			Alert alert = new Alert(Alert.AlertType.ERROR);
-			alert.setTitle("Error");
-			alert.setHeaderText("Couldn't open settings");
-			alert.setContentText(new Tracer(e).toString());
-			alert.showAndWait();
+			new Tracer(e).showAlert();
 		}
 	}
 	
@@ -201,7 +188,6 @@ public class Main extends Application// implements Initializable
 	
 	@FXML public void onMenuClassReport()
 	{
-		buffer.objects.put("parentText", userText);
 		classReport();
 	} //FXML call open report window
 	
@@ -230,12 +216,7 @@ public class Main extends Application// implements Initializable
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			System.err.println("Something went wrong opening class report");
-			Alert alert = new Alert(Alert.AlertType.ERROR);
-			alert.setTitle("Error");
-			alert.setHeaderText("Couldn't open class report");
-			alert.setContentText((new Tracer(e)).toString());
-			alert.showAndWait();
+			new Tracer(e).showAlert();
 		}
 	}
 	
@@ -269,12 +250,7 @@ public class Main extends Application// implements Initializable
 		catch (IOException e)
 		{
 			e.printStackTrace();
-			System.err.println("Something went wrong opening student report");
-			Alert alert = new Alert(Alert.AlertType.ERROR);
-			alert.setTitle("Error");
-			alert.setHeaderText("Couldn't open student report");
-			alert.setContentText(new Tracer(e).toString());
-			alert.showAndWait();
+			new Tracer(e).showAlert();
 		}
 	}
 	
@@ -304,19 +280,7 @@ public class Main extends Application// implements Initializable
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			System.err.println("Something went wrong opening about");
-			Alert alert = new Alert(Alert.AlertType.ERROR);
-			alert.setTitle("Error");
-			alert.setHeaderText("Couldn't open about");
-			alert.setContentText(new Tracer(e).toString());
-			alert.showAndWait();
+			new Tracer(e).showAlert();
 		}
-	}
-	
-	private List<String> getTextList(TextArea textArea)
-	{
-		List<String> list = new ArrayList<>();
-		for (CharSequence line : textArea.getParagraphs()) list.add(line.toString());
-		return list;
 	}
 }

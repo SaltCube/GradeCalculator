@@ -215,9 +215,7 @@ public class ClassReport implements Initializable
 	{
 		reportText.setEditable(false); //make text not editable
 		showReport();
-		//reportText.appendText("\n\n");
-		//reportText.appendText("————————————————");
-		//reportText.appendText("\n\n");
-		//showStudentData();
+		buffer.objects.remove("comments");
+		buffer.objects.remove("parentText");
 	}
 }

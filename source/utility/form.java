@@ -262,11 +262,6 @@ public class form
 		}
 	}
 	
-	@NotNull public static List<String> getComments(String line) //NEEDS FIX; returns comments in a list for every string(line) given
-	{
-		return null; //placeholder so program can compile for testing
-	}
-	
 	public static String digits(float d)
 	{
 		if (d == (int)d) return String.format("%d", (int)d);
