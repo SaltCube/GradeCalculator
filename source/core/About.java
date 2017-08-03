@@ -43,36 +43,32 @@ public class About implements Initializable
 		//aboutFlow.setWrapText(true); //wrap if the text is too long
 		//aboutText.setEditable(false); //make text not editable
 		//aboutText.setDisable(true); //make text not selectable
-		Text author = new Text("Author: SaltCube\n");
-		Text info = new Text("* labels: drops: weights: letters: cutoffs: must be specified before the scores\n" +
-							 "each on its own line with \",\" separating values including the last value.\n" +
-							 "These lines can be any order\n" +
+		Text info = new Text("* labels, drops, weights, letters, and cutoffs all must be specified before the scores each on its own line with \",\" separating values\n" +
+							 "\tThe lines can be any order, however the values for each line must match order to each other\n" +
 							 "* StudentReport portions must end with a *, including at the end.\n" +
-							 "* First line with points is assumed to supply the correct number of values for each portion. You can use a dummy record for this, if you prefer. \n" +
-							 "* Each grade value and the * are separated by a comma.\n" +
-							 "* Weights are typed as decimal. Ex: .3 for 30%.\n" +
-							 "* No extraneous characters at the end is allowed other than a \",\" or \",*\".\n" +
-							 "* Comment lines begin with // and can be any where.\n" +
-							 "* Blank lines can appear anywhere. No blank characters mixed with data values.\n" +
-							 "* At the end of regular data you can add as many extra credits as you want\n" +
-							 "* Sample data file is shown below\n" +
+							 "* The maximum number of values found is assumed to be the correct number of values \n" +
+							 "* Each grade value and the * must be separated by comma.\n" +
+							 "* Weights are typed as a decimal. Ex: .3 for 30%.\n" +
+							 "* Comments are C-style. Block comments do not need asterisks, however.\n" +
+							 "* Blank lines can appear anywhere, except within data values.\n" +
+							 "* ?At the end of regular data you can add as many extra credits as you want?\n" +
 							 "* Warnings are not necessarily errors. You have to decide on those.\n" +
 							 "* Totals and individual scores can be > 100, if you choose to.\n" +
 							 "* Weights do not have to add up to 100, if you choose to.\n" +
-							 "* Nothing is saved automatically.\n" +
+							 "* Nothing is saved automatically (yet).\n" +
 							 "* Blanks are allowed except at the beginning and end of any line.\n");
-		Text example = new Text("//___________________________________________________________\n" +
-								"// class: CSCI 1234 FALL 2002 \n" +
-								"labels:Tests,Labs,Final,\n" +
-								"drops:1,0,0,\n" +
-								"weights:.3,.4,.3,\n" +
-								"letters:A+,A,B,C,D,F,\n" +
-								"cutoffs:90,84.0,78.5,66.5,59.5,0,\n" +
-								"//data or dummy record can go here \n" +
-								"tom:90,80,40,100,78,66,77,88,*,90,80,90,*,88,*\n" +
+		Text example = new Text("\nExample————————————————————————————————————————\n" +
+								"//class: CSC 1302 FALL 2017 \n" +
+								"FORMATTING\n" +
+								"labels:Tests,Labs,Final\n" +
+								"drops:1,0,0 \t//1 test drops, no labs or final drop\n" +
+								"weights:.3,.4,.3 \t//test at 0.3, labs at 0.4, final at 0.3\n" +
+								"letters:A+,A,B,C,D,F \t\t//6 grade letter categories\n" +
+								"cutoffs:90,84.0,78.5,66.5,59.5,0 \t//6 cutoffs for the grade letter categories \n" +
+								"STUDENTS\n" +
+								"tom: /this is tom's data ->/ 90,80,40,100,78,66,77,88,*,90,80,90,*,88,*\n" +
 								"pam:90,80,60,80,78,66,77,88,*,150,80,90,*,82,*\n" +
 								"pat:90,80,50,80,78,66,77,*,90,80,40,*,40,*");
-		aboutFlow.getChildren().add(author);
 		aboutFlow.getChildren().add(info);
 		aboutFlow.getChildren().add(example);
 	}
