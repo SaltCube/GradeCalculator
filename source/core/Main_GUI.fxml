@@ -3,11 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" minHeight="400.0" minWidth="300.0" prefHeight="800.0"
-			prefWidth="1400.0" xmlns="http://javafx.com/javafx/8.0.111"
-			fx:controller="core.Main">
-	<center>
-		<TextArea fx:id="userText" prefHeight="200.0" prefWidth="1400.0"/>
-	</center>
+			prefWidth="1400.0" xmlns="http://javafx.com/javafx/8.0.111" fx:controller="core.Main">
 	<top>
 		<GridPane prefHeight="32.0" prefWidth="32.0" BorderPane.alignment="CENTER">
 			<columnConstraints>
@@ -34,18 +30,25 @@
 					<MenuItem fx:id="editCopy" onAction="#onEditCopy" text="Copy"/>
 					<MenuItem fx:id="editPaste" onAction="#onEditPaste" text="Paste"/>
 				</Menu>
-				<Menu text="Calculate">
-					<MenuItem fx:id="menuClassReport" onAction="#onMenuClassReport" text="Class Report"/>
-					<MenuItem fx:id="menuStudentReport" onAction="#onMenuStudentReport" text="Student Report"/>
+				<Menu text="Statistics">
+					<MenuItem fx:id="statClassReport" onAction="#onStatClassReport" text="Class Report"/>
+					<MenuItem fx:id="statStudentReport" onAction="#onStatStudentReport" text="Student Report"/>
 				</Menu>
 				<Menu text="Help">
 					<MenuItem fx:id="helpAbout" onAction="#onHelpAbout" text="About"/>
 				</Menu>
 			</MenuBar>
-			<Button fx:id="buttonAbout" onMouseClicked="#onButtonAbout" contentDisplay="CENTER" maxHeight="32.0"
-					maxWidth="40.0" minHeight="32.0" minWidth="32.0" prefHeight="32.0" prefWidth="40.0"
+			<Button fx:id="buttonAbout" contentDisplay="CENTER" maxHeight="32.0" maxWidth="40.0" minHeight="32.0"
+					minWidth="32.0" onMouseClicked="#onButtonAbout" prefHeight="32.0" prefWidth="40.0"
 					stylesheets="@info.css" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="NEVER"
 					GridPane.valignment="CENTER"/>
 		</GridPane>
 	</top>
+	<center>
+		<SplitPane dividerPositions="0.2" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0"
+				   BorderPane.alignment="CENTER">
+			<TextArea fx:id="userText" prefHeight="200.0" prefWidth="1400.0"/>
+			<TableView fx:id="userTable" prefHeight="200.0" prefWidth="1398.0"/>
+		</SplitPane>
+	</center>
 </BorderPane>

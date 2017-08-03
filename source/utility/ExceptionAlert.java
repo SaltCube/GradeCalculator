@@ -21,7 +21,7 @@ public class ExceptionAlert implements Initializable
 	@FXML public TextArea exceptionText;
 	private Tracer tracer = (Tracer)buffer.objects.get("Tracer");
 	private boolean isVerbose = false;
-
+	
 	@FXML public void onExceptionSaveAs()
 	{
 		File file = new FileChooser().showSaveDialog(exceptionText.getScene().getWindow());

@@ -1,5 +1,6 @@
 package utility;
 
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,7 +25,7 @@ public class form
 		return stringBuilder.toString();
 	}
 	
-	@Deprecated public static List<String> getStudentsList(Map<String, LinkedHashMap<String, List<Float>>> students)
+	public static List<String> getStudentsList(Map<String, LinkedHashMap<String, List<Float>>> students)
 	{
 		List<String> data = new ArrayList<>();
 		for (Map.Entry<String, LinkedHashMap<String, List<Float>>> bigGrades : students.entrySet())
@@ -43,7 +44,7 @@ public class form
 		return data;
 	}
 	
-	@Deprecated public static Map<String, LinkedHashMap<String, List<Float>>> getStudents(TextArea textArea)
+	public static Map<String, LinkedHashMap<String, List<Float>>> getStudents(TextArea textArea)
 	{
 		Map<String, LinkedHashMap<String, List<Float>>> students = new LinkedHashMap<>();
 		String[] labels = new String[0];
@@ -83,7 +84,7 @@ public class form
 		return students;
 	}
 	
-	@Deprecated public static Map<String, List> formatData(TextArea textArea)
+	public static Map<String, List> formatData(TextArea textArea)
 	{
 		Map<String, List> formats = new HashMap<>();
 		//new FileChooser().showOpenDialog(null)
@@ -98,7 +99,7 @@ public class form
 				//System.out.println(readLine);
 				String[] formatLine = readLine.split(":");
 				if (!readLine.toUpperCase().contains("FORMAT"))
-					formats.put(formatLine[0], Arrays.asList(formatLine[1].split(",")));
+					formats.put(formatLine[0], new ArrayList<>(Arrays.asList(formatLine[1].split(","))));
 			}
 		}
 		for (Map.Entry<String, List> entry : formats.entrySet())
@@ -106,14 +107,14 @@ public class form
 		return formats;
 	}
 	
-	@NotNull public static Map[] parseData(TextArea textArea)
+	@Deprecated @NotNull public static Map[] parseTextAreaOLD(TextArea textArea)
 	{
 		if (textArea == null) throw new NullPointerException();
 		Map<String, List> formats = new HashMap<>();
 		Map<String, LinkedHashMap<String, List<Float>>> students = new LinkedHashMap<>();
 		buffer.objects.put("comments", new ArrayList<String>());
 		boolean inFormats = false, inStudents = false;
-		int lineIndex = 1;
+		int lineIndex = 0;
 		for (CharSequence readChars : textArea.getParagraphs())
 		{
 			String readLine = readChars.toString();
@@ -138,7 +139,7 @@ public class form
 						{
 							case ("labels"):
 							{
-								formats.put(line[0], Arrays.asList(formatting));
+								formats.put(line[0], new ArrayList<>(Arrays.asList(formatting)));
 								break;
 							}
 							case ("drops"):
@@ -176,7 +177,7 @@ public class form
 							default:
 							{
 								buffer.objects.put("unknownFormats", readLine);
-								formats.put("?" + line[0], Arrays.asList(formatting));
+								formats.put("?" + line[0], new ArrayList<>(Arrays.asList(formatting)));
 								//add popup warning user of unknown format line at lineIndex
 							}
 						}
@@ -206,6 +207,119 @@ public class form
 			lineIndex++;
 		}
 		return new Map[]{formats, students};
+	}
+	
+	@NotNull public static Object[] parseTextArea(TextArea textArea)
+	{
+		if (textArea == null) throw new NullPointerException();
+		Map<String, List> formats = new HashMap<>();
+		List<Student> students = new ArrayList<>();
+		buffer.objects.put("comments", new ArrayList<String>());
+		boolean inFormats = false, inStudents = false;
+		int lineIndex = 0;
+		for (CharSequence readChars : textArea.getParagraphs())
+		{
+			String readLine = readChars.toString();
+			if (!readLine.isEmpty()) readLine = unComment(readLine);
+			if (!readLine.isEmpty())
+			{
+				if (!inStudents && !inFormats && readLine.toUpperCase().contains("FORMAT")) inFormats = true;
+				else if (!inStudents && inFormats && readLine.toUpperCase().contains("STUDENT"))
+				{
+					inStudents = true;
+					inFormats = false;
+				}
+				else
+				{
+					if (inFormats)
+					{
+						readLine = readLine.replaceAll("[ *\\-]", "");
+						String[] line = readLine.toLowerCase().split(":");
+						String[] formatting = line[1].split(",");
+						int count = formatting.length;
+						switch (line[0])
+						{
+							case ("labels"):
+							{
+								formats.put(line[0], new ArrayList<>(Arrays.asList(formatting)));
+								break;
+							}
+							case ("drops"):
+							{
+								List<Integer> drops = new ArrayList<>(count);
+								for (String drop : formatting) drops.add(Integer.parseInt(drop));
+								formats.put(line[0], drops);
+								break;
+							}
+							case ("weights"):
+							{
+								List<Float> weights = new ArrayList<>(count);
+								for (String weight : formatting) weights.add(Float.parseFloat(weight));
+								formats.put(line[0], weights);
+								break;
+							}
+							case ("letters"):
+							{
+								List<Character> letters = new ArrayList<>(count);
+								for (String letter : formatting)
+								{
+									assert letter.length() == 1;
+									letters.add(letter.toUpperCase().charAt(0));
+								}
+								formats.put(line[0], letters);
+								break;
+							}
+							case ("cutoffs"):
+							{
+								List<Float> cutoffs = new ArrayList<>(count);
+								for (String cutoff : formatting) cutoffs.add(Float.parseFloat(cutoff));
+								formats.put(line[0], cutoffs);
+								break;
+							}
+							default:
+							{
+								buffer.objects.put("unknownFormats", readLine);
+								formats.put("?" + line[0], new ArrayList<>(Arrays.asList(formatting)));
+								//add popup warning user of unknown format line at lineIndex
+							}
+						}
+					}
+					else if (inStudents) //format data should already be populated
+					{
+						String[] line = readLine.split(":"); //String array where element0 is content before colon
+						// and element1 is content after
+						List<String> labels = (ArrayList<String>)formats.get("labels");
+						assert labels.size() > 0;
+						List<Grades> studentGrades = new ArrayList<>(labels.size());
+						for (int labelIndex = 0; labelIndex < labels.size(); labelIndex++)
+						{
+							Grades scores = new Grades(labels.get(labelIndex));
+							String[] currentGrades = line[1].replaceAll("[ -]", "").split("\\*");
+							List<Float> gradeData = new ArrayList<>();
+							for (String score : currentGrades[labelIndex].split(","))
+							{
+								if (score.equals("*")) break;
+								if (!score.isEmpty()) gradeData.add(Float.parseFloat(score));
+							}
+							scores.setScores(gradeData);
+							studentGrades.add(scores);
+						}
+						assert studentGrades.size() == labels.size(); //replace with popup later
+						students.add(new Student(line[0], studentGrades));
+					}
+				}
+			}
+			lineIndex++;
+		}
+		return new Object[]{formats, students};
+	}
+	
+	@NotNull public static List<Student> parseTableView(TableView tableView)
+	{
+		if (tableView == null) throw new NullPointerException();
+		Map<String, LinkedHashMap<String, List<Float>>> students = new LinkedHashMap<>();
+		
+		return new ArrayList<>();
 	}
 	
 	@NotNull public static List[] listData(Map[] data)
