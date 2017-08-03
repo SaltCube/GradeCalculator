@@ -3,16 +3,9 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" minHeight="200.0" minWidth="300.0" prefHeight="680.0"
-			prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111" fx:controller="core.About">
-	<center>
-		<TextArea fx:id="aboutText" disable="true" editable="false" prefHeight="200.0" prefWidth="200.0"
-				  stylesheets="@About.css" wrapText="true" BorderPane.alignment="CENTER">
-			<BorderPane.margin>
-				<Insets/>
-			</BorderPane.margin>
-		</TextArea>
-	</center>
+<?import javafx.scene.text.TextFlow?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" minHeight="200.0" minWidth="300.0" prefHeight="680.0" prefWidth="800.0"
+			xmlns="http://javafx.com/javafx/8.0.111" fx:controller="core.About">
 	<bottom>
 		<ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
 			<buttons>
@@ -24,4 +17,11 @@
 			</BorderPane.margin>
 		</ButtonBar>
 	</bottom>
+	<center>
+		<TextFlow fx:id="aboutFlow" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+			<BorderPane.margin>
+				<Insets bottom="4.0" left="16.0" right="16.0" top="8.0"/>
+			</BorderPane.margin>
+		</TextFlow>
+	</center>
 </BorderPane>
