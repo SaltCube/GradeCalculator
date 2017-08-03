@@ -4,10 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -17,21 +14,26 @@ import utility.buffer;
 import utility.form;
 
 import java.io.*;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Main extends Application// implements Initializable
 {
 	Stage primaryStage;
+	
 	@FXML Button buttonAbout;
-	//@Override public void initialize(URL location, ResourceBundle resources){}
-	@FXML MenuItem menuStudentReport;
 	@FXML TextArea userText;
+	@FXML TableView userTable;
 	@FXML MenuItem fileNew;
 	@FXML MenuItem fileSave;
 	@FXML MenuItem fileSaveAs;
 	@FXML MenuItem fileOpen;
 	@FXML MenuItem fileSettings;
 	@FXML MenuItem helpAbout;
-	@FXML MenuItem menuClassReport;
+	@FXML MenuItem statClassReport;
+	@FXML MenuItem statStudentReport;
 	@FXML MenuItem filePrint;
 	@FXML MenuItem editUndo;
 	@FXML MenuItem editRedo;
@@ -55,6 +57,39 @@ public class Main extends Application// implements Initializable
 			e.printStackTrace();
 			System.err.println("Something went wrong in the start");
 		}
+	}
+	
+	private Map[] data = null;
+	
+	void textToData()
+	{
+		data = form.parseTextArea(userText);
+	}
+	
+	void tableToData()
+	{
+	
+	}
+	
+	void updateText(Map[] data)
+	{
+		Map<String, List> formats = (HashMap<String, List>)data[0];
+		Map<String, LinkedHashMap<String, List<Float>>> students = (LinkedHashMap<String, LinkedHashMap<String, List<Float>>>)data[1];
+	}
+	
+	void updateTable(Map[] data)
+	{
+		Map<String, List> formats = (HashMap<String, List>)data[0];
+		Map<String, LinkedHashMap<String, List<Float>>> students = (LinkedHashMap<String, LinkedHashMap<String, List<Float>>>)data[1];
+		//userTable
+		//columns: <Student Name>, <Avg>, <Letter>, //sortable
+		// <grade type 1 (<grade 1>, <grade 2>, <grade 3>, ...)>, <grade type 2 (<grade 1, ...)> //nested columns; not sortable
+		
+	}
+	
+	void readTable()
+	{
+		Map<String, LinkedHashMap<String, List<Float>>> students = new LinkedHashMap<>();
 	}
 	
 	@FXML public void onFileNew()
@@ -90,14 +125,19 @@ public class Main extends Application// implements Initializable
 	
 	@FXML public void onFileOpen() //test exception handling here
 	{
-		open(new FileChooser().showOpenDialog(userText.getScene().getWindow()));
+		File file = new FileChooser().showOpenDialog(userText.getScene().getWindow());
+		if (file != null)
+		{
+			path = file.getPath(); //sets the file path to the opened file
+			open(file);
+		}
+		else System.err.println("Null pointer error opening file content");
 	} //FXML call to open file
 	
 	private void open(File file) //open file method logic
 	{
 		try (BufferedReader reader = new BufferedReader(new FileReader(file)))
 		{
-			path = file.getPath(); //sets the file path to the opened file
 			String line; //string for storing current line read
 			userText.setText(null); //wipes the current text in the textarea
 			while ((line = reader.readLine()) != null)
@@ -191,7 +231,7 @@ public class Main extends Application// implements Initializable
 		userText.paste();
 	}
 	
-	@FXML public void onMenuClassReport()
+	@FXML public void onStatClassReport()
 	{
 		classReport();
 	} //FXML call open report window
@@ -202,7 +242,6 @@ public class Main extends Application// implements Initializable
 		{
 			if (userText.getParagraphs().size() < 8)
 			{
-				buffer.objects.put("parentText", userText);
 				Alert alert = new Alert(Alert.AlertType.INFORMATION);
 				alert.setTitle("Report failed");
 				alert.setHeaderText("No data to parse");
@@ -211,6 +250,7 @@ public class Main extends Application// implements Initializable
 			}
 			else
 			{
+				buffer.objects.put("parentText", userText);
 				Stage report = new Stage(); //opens a new stage for the report window
 				report.setTitle("ClassReport"); //sets title
 				report.getIcons().add(new Image("core/icon.png")); //sets icon
@@ -225,7 +265,7 @@ public class Main extends Application// implements Initializable
 		}
 	}
 	
-	@FXML public void onMenuStudentReport()
+	@FXML public void onStatStudentReport()
 	{
 		studentReport();
 	} //FXML call open studentReport window
