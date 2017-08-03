@@ -114,7 +114,7 @@ public class form
 		Map<String, LinkedHashMap<String, List<Float>>> students = new LinkedHashMap<>();
 		buffer.objects.put("comments", new ArrayList<String>());
 		boolean inFormats = false, inStudents = false;
-		int lineIndex = 1;
+		int lineIndex = 0;
 		for (CharSequence readChars : textArea.getParagraphs())
 		{
 			String readLine = readChars.toString();
