@@ -19,9 +19,9 @@ public class ClassReport implements Initializable
 	@FXML Button reportSaveAs;
 	@FXML Button reportPrint;
 	private final TextArea parentText = (TextArea)buffer.objects.get("parentText");
-	//private Map[] data = form.parseTextArea(parentText);
+	//private Map[] data = form.parseTextAreaOLD(parentText);
 	//format relevant objects
-	private final Object[] data = form.parseTextAreaNew(parentText);
+	private final Object[] data = form.parseTextArea(parentText);
 	private final Map<String, List> formats = (HashMap<String, List>)data[0];
 	private List<String> labels = new ArrayList<>(formats.get("labels"));
 	private final int labelCount = labels.size();
@@ -54,12 +54,6 @@ public class ClassReport implements Initializable
 	{
 		IO.print(new File("C:/File.txt")/* <-this is a placeholder, print report file instead*/);
 	} //NEEDS FIX; (disabled) FXML call for report print
-	
-	private void showStudentData()
-	{
-		for (String line : (List<String>)form.listData(form.parseTextArea(parentText))[1])
-			reportText.appendText(line + System.getProperty("line.separator"));
-	}
 	
 	private void showReport()
 	{

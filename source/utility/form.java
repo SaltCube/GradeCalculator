@@ -107,7 +107,7 @@ public class form
 		return formats;
 	}
 	
-	@NotNull public static Map[] parseTextArea(TextArea textArea)
+	@Deprecated @NotNull public static Map[] parseTextAreaOLD(TextArea textArea)
 	{
 		if (textArea == null) throw new NullPointerException();
 		Map<String, List> formats = new HashMap<>();
@@ -209,7 +209,7 @@ public class form
 		return new Map[]{formats, students};
 	}
 	
-	public static Object[] parseTextAreaNew(TextArea textArea)
+	@NotNull public static Object[] parseTextArea(TextArea textArea)
 	{
 		if (textArea == null) throw new NullPointerException();
 		Map<String, List> formats = new HashMap<>();
@@ -314,12 +314,12 @@ public class form
 		return new Object[]{formats, students};
 	}
 	
-	@NotNull public static Map[] parseTableView(TableView tableView)
+	@NotNull public static List<Student> parseTableView(TableView tableView)
 	{
 		if (tableView == null) throw new NullPointerException();
 		Map<String, LinkedHashMap<String, List<Float>>> students = new LinkedHashMap<>();
 		
-		return new Map[0];
+		return new ArrayList<>();
 	}
 	
 	@NotNull public static List[] listData(Map[] data)

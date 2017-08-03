@@ -63,7 +63,8 @@ public class Main extends Application// implements Initializable
 	
 	void textToData()
 	{
-		data = form.parseTextArea(userText);
+		//(OLD)data = form.parseTextAreaOLD(userText);
+		
 	}
 	
 	void tableToData()
