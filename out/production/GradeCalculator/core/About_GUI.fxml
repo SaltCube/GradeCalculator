@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ButtonBar?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.TextFlow?>
-
-<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="200.0" minWidth="300.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="core.About">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+			minHeight="200.0" minWidth="300.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.111"
+			fx:controller="core.About">
 	<bottom>
 		<ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
 			<buttons>
-				<Button fx:id="GitHubButton" onAction="#GitHubPressed" text="GitHub" ButtonBar.buttonData="LEFT" />
-				<Button fx:id="closeButton" onAction="#closePressed" text="Close" ButtonBar.buttonData="RIGHT" />
+				<Button fx:id="GitHubButton" onAction="#GitHubPressed" text="GitHub" ButtonBar.buttonData="LEFT"/>
+				<Button fx:id="closeButton" onAction="#closePressed" text="Close" ButtonBar.buttonData="RIGHT"/>
 			</buttons>
 			<BorderPane.margin>
-				<Insets left="4.0" right="4.0" />
+				<Insets left="4.0" right="4.0"/>
 			</BorderPane.margin>
 		</ButtonBar>
 	</bottom>
 	<center>
 		<TextFlow fx:id="aboutFlow" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
 			<BorderPane.margin>
-				<Insets bottom="4.0" left="16.0" right="16.0" top="8.0" />
+				<Insets bottom="4.0" left="16.0" right="16.0" top="8.0"/>
 			</BorderPane.margin>
 		</TextFlow>
 	</center>

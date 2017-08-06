@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="GradeCalculator.jar" size="157295" download="eager" />
+    <jar href="GradeCalculator.jar" size="161198" download="eager" />
   </resources>
   <jfx:javafx-desc  width="1400" height="800" main-class="core.Main"  name="GradeCalculator" />
   <update check="background"/>
