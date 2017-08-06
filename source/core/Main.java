@@ -253,7 +253,7 @@ public class Main extends Application// implements Initializable
 			{
 				buffer.objects.put("parentText", userText);
 				Stage report = new Stage(); //opens a new stage for the report window
-				report.setTitle("ClassReport"); //sets title
+				report.setTitle("Class Report"); //sets title
 				report.getIcons().add(new Image("core/icon.png")); //sets icon
 				report.setScene(new Scene(FXMLLoader.load(getClass().getResource("ClassReport_GUI.fxml")))); //sets GUI file
 				report.show(); //shows window
@@ -286,7 +286,7 @@ public class Main extends Application// implements Initializable
 			else
 			{
 				Stage report = new Stage(); //new stage for report window
-				report.setTitle("StudentReport"); //sets title
+				report.setTitle("Student Report"); //sets title
 				report.getIcons().add(new Image("core/icon.png")); //sets icon
 				report.setScene(new Scene(FXMLLoader.load(getClass().getResource("StudentReport_GUI.fxml")))); //sets GUI file
 				report.setAlwaysOnTop(true); //sets to always show on top of desktop (until closed)
@@ -315,7 +315,7 @@ public class Main extends Application// implements Initializable
 		try
 		{
 			Stage about = new Stage(); //new stage for about window
-			about.setTitle("About"); //sets title
+			about.setTitle("Info"); //sets title
 			about.getIcons().add(new Image("core/icon.png")); //sets icon
 			about.setScene(new Scene(FXMLLoader.load(getClass().getResource("About_GUI.fxml")))); //sets GUI file
 			about.setResizable(false); //sets the window to not be resizable
